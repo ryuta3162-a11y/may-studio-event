@@ -1,0 +1,39 @@
+JOYFIT24経堂 5月スタジオイベント LP — セットアップ手順
+=====================================================
+
+■ 同梱物
+- index.html … 静的LP＋申込フォーム（Tailwind CDN）
+- gas/Code.gs … スプレッドシート追記用Google Apps Script
+
+■ スプレッドシート
+URL（スプレッドシートIDはコード内にも記載）:
+https://docs.google.com/spreadsheets/d/1RPUw0slNCit9ZwJgINGfv89oc2Hxw8zzAZyMt6g_QuY/edit
+
+gid=799051187 のタブ名をブラウザ上で確認し、gas/Code.gs の SHEET_NAME を同じ名前に変更してください。
+
+■ シート1行目（推奨ヘッダー順）
+タイムスタンプ, フォーム種別, 店舗名, 氏名, 電話番号, 参加希望レッスン, 参加希望日, 希望開始時間, 参加希望日時まとめ, 備考, 同意
+
+※LPは氏名・電話番号のみ取得（会員番号・メール・ふりがななし）。既存シート列がある場合は gas/Code.gs の HEADER_ROW と appendRow を合わせてください。
+
+既に別形式の列がある場合:
+- 既存1行目に合わせて gas/Code.gs の HEADER_ROW と appendRow の配列順を編集する
+- または空のシート／新規タブを作成して上記ヘッダーを用意する
+
+■ GASデプロイ
+1. スプレッドシートを開く
+2. メニュー「拡張機能」>「Apps Script」
+3. Code.gs の内容を貼り付け（SPREADSHEET_ID / SHEET_NAME を確認）
+4. 「デプロイ」>「新しいデプロイ」> 種類「ウェブアプリ」
+   - 次のユーザーとして実行: 自分
+   - アクセスできるユーザー: 全員（テスト後に制限しても可）
+5. 発行されたURLを index.html 内の定数 webAppUrl に貼り付け
+
+■ POP（PDF）反映
+- GWイベントPOP.pdf は画像主体のため自動読取できませんでした。
+- index.html 上部の EVENT_CONFIG を、POPの文言・日時・枠名に合わせて更新してください。
+- 参加希望枠の <select> オプションも同じ名称に揃えると運用が楽です。
+
+■ ホスティング
+- 任意のHTTPSホストに index.html を配置（ローカルfile://ではCORSや挙動が不安定な場合があります）
+- 画像・地図はヒーロー下／アクセス欄に追加してください

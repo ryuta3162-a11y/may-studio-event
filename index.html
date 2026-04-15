@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JOYFIT24経堂｜ゴールデンウィーク特別プログラム（2026年5月）</title>
+  <meta name="description" content="JOYFIT24経堂のゴールデンウィーク特別レッスンプログラム（2026年5月）。5/4（月）〜5/6（水）のスケジュールとお申込みフォーム。">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --jf-teal: #008374;
+      --jf-teal-dark: #006a5f;
+      --jf-teal-soft: rgba(0, 131, 116, 0.12);
+    }
+    body { font-family: 'Noto Sans JP', system-ui, sans-serif; }
+    .text-brand { color: var(--jf-teal); }
+    .bg-brand { background-color: var(--jf-teal); }
+    .bg-brand-dark { background-color: var(--jf-teal-dark); }
+    .ring-brand { --tw-ring-color: var(--jf-teal); }
+    .hero-grid {
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(0, 131, 116, 0.35), transparent 55%),
+        radial-gradient(900px 500px at 90% 0%, rgba(56, 189, 248, 0.18), transparent 50%),
+        linear-gradient(165deg, #0b1220 0%, #0f172a 42%, #0b1220 100%);
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(10px);
+    }
+    .section-title {
+      letter-spacing: 0.08em;
+    }
+    .input {
+      width: 100%;
+      border-radius: 0.75rem;
+      border: 1px solid #e5e7eb;
+      padding: 0.85rem 1rem;
+      font-size: 0.95rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .input:focus {
+      outline: none;
+      border-color: var(--jf-teal);
+      box-shadow: 0 0 0 3px var(--jf-teal-soft);
+    }
+    .required::after {
+      content: ' *';
+      color: #ef4444;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body class="text-slate-800 bg-slate-50 antialiased">
+  <!-- POP画像から転記（5/4・5/5・5/6）。細部は店舗掲示の原本に合わせて修正してください。 -->
+  <script>
+    const EVENT_CONFIG = {
+      storeName: 'JOYFIT24経堂',
+      campaignTitle: 'ゴールデンウィーク 特別プログラム',
+      subCatch: '2026年5月レッスンプログラム。ホットスタジオ／ピラティスルームのGW特別枠をご案内します。',
+      periodLine: '2026年5月4日（月）〜5月6日（水）※本LP掲載は5/4〜5/6分',
+      venueLine: 'JOYFIT24経堂 レッスンプログラム',
+      noteBullets: [
+        '5月4日（月）〜5月6日（水）の期間中は、非会員の方もレッスンにご参加いただけます。家族・友人・知人のお誘いも歓迎です。',
+        '参加には事前予約が必要です。詳細は館内掲示や参加券等でご確認ください。',
+        '通常プログラムで「休講」「イベント」と表記されているレッスンは、本代表スケジュールには掲載されません。休日プログラムは振替表をご参照ください。',
+        '3階のご利用時間は20:00までです（各日共通の注意事項）。'
+      ],
+      access: {
+        line1: '店舗：JOYFIT24経堂（住所・電話は店舗公式情報に合わせて編集してください）',
+        line2: 'アクセス：経堂駅周辺（詳細は店舗案内に準拠）'
+      }
+    };
+
+    /**
+     * 画像（GW特別プログラムPOP）からの文字起こし — 5/4・5/5・5/6のみ
+     * difficulty: POPの星マーク（★の数）／ star: POP上の「特別レッスン」相当の★付き
+     */
+    window.GW_SCHEDULE = [
+      {
+        dateIso: '2026-05-04',
+        label: '5月4日（月）',
+        blocks: [
+          {
+            room: 'ホットスタジオ',
+            lessons: [
+              { time: '9:30–10:30', title: 'ストレッチヨガ', difficulty: '★', instructor: 'YOKO', caption: '' },
+              { time: '10:45–11:45', title: 'ベーシックヨガ', difficulty: '★★', instructor: 'YOKO', caption: '' },
+              { time: '13:45–14:45', title: '睡眠のためのポールストレッチ', difficulty: '★', instructor: 'MIE', caption: '' },
+              { time: '15:15–16:15', title: 'かんたんサーキット', difficulty: '★★★', instructor: 'MIE', caption: '' },
+              { time: '17:00–17:45', title: 'リラックスヨガ', difficulty: '★', instructor: '坂東', caption: '' },
+              { time: '18:00–19:00', title: 'カラダ調整ヨガ', difficulty: '★★', instructor: '坂東', caption: '' }
+            ]
+          },
+          {
+            room: 'ピラティスルーム',
+            lessons: [
+              { time: '10:30–11:30', title: 'ピラティスリフォーマー アーム＆ショルダー・スタビリティ', difficulty: '★★★', instructor: 'YUKI', caption: '' },
+              { time: '12:00–13:00', title: 'ピラティスリフォーマー テニス＆オープン', difficulty: '★★', instructor: 'YUKI', caption: '' }
+            ]
+          }
+        ],
+        foot: '3階のご利用時間は20:00までです。'
+      },
+      {
+        dateIso: '2026-05-05',
+        label: '5月5日（火）',
+        blocks: [
+          {
+            room: 'ホットスタジオ',
+            lessons: [
+              { time: '9:30–10:30', title: 'ハタヨガ ビギナー', difficulty: '★', instructor: 'ナカシマトオル', caption: '' },
+              { time: '10:45–11:45', title: 'パワーヨガ', difficulty: '★★★', instructor: 'ナカシマトオル', caption: '' },
+              { time: '12:15–13:15', title: 'ホイールで月礼拝', difficulty: '★★', instructor: 'MIE', caption: '' },
+              { time: '13:45–14:45', title: 'SHIN美', difficulty: '★★', instructor: 'MIE', caption: '' },
+              { time: '15:15–16:45', title: '★ポール＆全身ストレッチヨガ', difficulty: '★', instructor: 'シカノ', caption: '初めての方もOK。男性やカラダの硬い方も安心してご参加いただけます。' },
+              { time: '18:00–19:15', title: '★ポール＆全身ストレッチヨガ', difficulty: '★', instructor: 'シカノ', caption: '' }
+            ]
+          },
+          {
+            room: 'ピラティスルーム',
+            lessons: [
+              { time: '16:45–17:45', title: 'ピラティスリフォーマー アーム＆ショルダー・スタビリティ', difficulty: '★★★', instructor: 'みと', caption: '' },
+              { time: '18:15–19:15', title: 'ピラティスリフォーマー 美尻メイク', difficulty: '★★★', instructor: 'みと', caption: '' }
+            ]
+          }
+        ],
+        foot: '3階のご利用時間は20:00までです。'
+      },
+      {
+        dateIso: '2026-05-06',
+        label: '5月6日（水）',
+        blocks: [
+          {
+            room: 'ホットスタジオ',
+            lessons: [
+              { time: '9:30–10:30', title: '★首肩コリ腰痛改善ヨガ', difficulty: '★', instructor: 'マリコ', caption: 'ストレートネック・猫背改善を意識。腰に無理のないストレッチ。' },
+              { time: '10:45–11:45', title: '快眠ヨガリラックス', difficulty: '★', instructor: 'マリコ', caption: '骨盤・横隔膜を呼吸で動かし、セルフマッサージでストレスを解放。' },
+              { time: '13:30–14:30', title: 'リズムステップ', difficulty: '★★', instructor: 'ハチ', caption: '' },
+              { time: '15:00–15:45', title: 'はじめてのHIPHOP', difficulty: '★★', instructor: 'ハチ', caption: '' },
+              { time: '17:00–17:45', title: 'ホイールで月礼拝', difficulty: '★★', instructor: 'ハナ', caption: '' },
+              { time: '18:15–19:15', title: '鍛えるヨガ', difficulty: '★★', instructor: 'ハナ', caption: '' }
+            ]
+          },
+          {
+            room: 'ピラティスルーム',
+            lessons: [
+              { time: '12:15–13:15', title: 'ピラティスリフォーマー 美尻メイク', difficulty: '★★★', instructor: 'YUKI', caption: '' },
+              { time: '13:45–14:45', title: 'ピラティスリフォーマー トータルボディメイク', difficulty: '★★★', instructor: 'YUKI', caption: '' }
+            ]
+          }
+        ],
+        foot: '3階のご利用時間は20:00までです。'
+      }
+    ];
+  </script>
+
+  <header class="hero-grid text-white">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
+        <div class="max-w-2xl">
+          <p class="text-sm font-semibold tracking-widest text-teal-200/90 uppercase section-title">External Promotion LP</p>
+          <h1 class="mt-3 text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight" id="hero-title"></h1>
+          <p class="mt-4 text-base sm:text-lg text-slate-200/90 leading-relaxed" id="hero-sub"></p>
+          <div class="mt-6 flex flex-wrap gap-3 text-sm">
+            <span class="glass rounded-full px-4 py-2 font-medium" id="hero-period"></span>
+            <span class="glass rounded-full px-4 py-2 font-medium" id="hero-venue"></span>
+          </div>
+          <div class="mt-8 flex flex-col sm:flex-row gap-3">
+            <a href="#apply" class="inline-flex justify-center items-center rounded-full bg-teal-400 text-slate-900 font-bold px-8 py-3.5 shadow-lg shadow-teal-500/20 hover:bg-teal-300 transition">お申込みへ</a>
+            <a href="#overview" class="inline-flex justify-center items-center rounded-full border border-white/25 px-8 py-3.5 font-semibold hover:bg-white/10 transition">イベント概要</a>
+          </div>
+        </div>
+        <div class="w-full max-w-md lg:max-w-sm">
+          <div class="glass rounded-2xl p-6 sm:p-7">
+            <p class="text-xs font-semibold text-teal-100 tracking-wider">POINT</p>
+            <ul class="mt-4 space-y-3 text-sm text-slate-100/95" id="hero-points"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="overview" class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
+      <div class="max-w-3xl">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">イベントの見どころ</h2>
+        <p class="mt-3 text-slate-600 leading-relaxed">GW期間中の特別プログラムとして、通常とは異なるラインナップをご用意。非会員の方のご参加も可能です（5/4〜5/6）。</p>
+      </div>
+      <div class="mt-10 grid gap-6 sm:grid-cols-3">
+        <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200/80">
+          <div class="h-10 w-10 rounded-xl bg-brand/10 flex items-center justify-center text-brand font-bold">01</div>
+          <h3 class="mt-4 text-lg font-bold text-slate-900">スタジオの熱量を可視化</h3>
+          <p class="mt-2 text-sm text-slate-600 leading-relaxed">プログラム名・インストラクター・雰囲気が伝わる短いリード文を配置。写真差し替えはヒーロー下に1枚でも効果的です。</p>
+        </article>
+        <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200/80">
+          <div class="h-10 w-10 rounded-xl bg-brand/10 flex items-center justify-center text-brand font-bold">02</div>
+          <h3 class="mt-4 text-lg font-bold text-slate-900">申込導線を一本化</h3>
+          <p class="mt-2 text-sm text-slate-600 leading-relaxed">QR・SNS・Web広告から同じフォームへ誘導し、計測と運用を簡素化します。</p>
+        </article>
+        <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200/80">
+          <div class="h-10 w-10 rounded-xl bg-brand/10 flex items-center justify-center text-brand font-bold">03</div>
+          <h3 class="mt-4 text-lg font-bold text-slate-900">スプレッドシート自動反映</h3>
+          <p class="mt-2 text-sm text-slate-600 leading-relaxed">Google Apps Script（Webアプリ）経由で、運営用シートへ1行追記。必要に応じてSlack通知などへ拡張できます。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="bg-white border-y border-slate-200/80">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-14 sm:py-18">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">タイムテーブル</h2>
+            <p class="mt-2 text-slate-600 text-sm sm:text-base">5月4日（月）〜6日（水）／店舗POPに基づく掲載です。星（★）は難易度、先頭の★付きレッスンはPOP上の特別レッスン表記に相当します。</p>
+          </div>
+        </div>
+        <div id="schedule-days" class="mt-10 space-y-12"></div>
+        <div class="mt-8 rounded-xl bg-amber-50 border border-amber-200/80 p-4 text-amber-950 text-sm" id="notice-box"></div>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
+      <div class="grid gap-10 lg:grid-cols-2 lg:gap-14 items-start">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">店舗・アクセス</h2>
+          <p class="mt-3 text-slate-600 leading-relaxed" id="access-text"></p>
+          <div class="mt-6 rounded-2xl overflow-hidden ring-1 ring-slate-200 bg-slate-100 aspect-video flex items-center justify-center text-slate-500 text-sm">
+            地図埋め込み（Google Maps iframe 等）はここに配置
+          </div>
+        </div>
+        <div class="rounded-2xl bg-slate-900 text-white p-6 sm:p-8">
+          <h3 class="text-lg font-bold">ご来店の流れ（当日）</h3>
+          <ol class="mt-4 space-y-4 text-sm text-slate-100/95 list-decimal pl-5 marker:font-bold marker:text-teal-300">
+            <li><span class="font-semibold text-white">インターホンを鳴らす</span>　店舗入口にてインターホンをお呼びください。</li>
+            <li><span class="font-semibold text-white">レッスン開始の30分前にお越しください</span>　受付・ご案内のため、余裕を持ってご来店ください。</li>
+            <li><span class="font-semibold text-white">スタッフがご案内します</span>　入館後、レッスンまでスタッフが誘導いたします。</li>
+          </ol>
+          <h3 class="text-lg font-bold mt-8 pt-6 border-t border-white/15">運用メモ（社内共有）</h3>
+          <ul class="mt-4 space-y-3 text-sm text-slate-200/95 list-disc pl-5">
+            <li>本ページは静的HTML＋Tailwind CDN。ホスティングは貴社環境（HTTPS推奨）へ配置してください。</li>
+            <li>フォーム送信先URLは、スプレッドシートに紐づけたGAS WebアプリのデプロイURLに差し替えます。</li>
+            <li>シート1行目の列名は <code class="text-teal-200">gas/Code.gs</code> 内の定数と一致させてください。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="apply" class="bg-gradient-to-b from-slate-50 to-white pb-20 pt-6">
+      <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10">
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">お申込みフォーム</h2>
+          <p class="mt-2 text-slate-600 text-sm sm:text-base">お名前と電話番号のみでお申込みいただけます。送信後、指定のGoogleスプレッドシートへ1行追記されます。</p>
+        </div>
+
+        <form id="kyodo-event-form" class="rounded-2xl bg-white p-6 sm:p-10 shadow-lg ring-1 ring-slate-200/80 space-y-8">
+          <input type="hidden" name="formType" value="kyodo_may_studio_event">
+          <input type="hidden" name="store_name" id="field-store-name">
+
+          <div class="rounded-xl border border-teal-200 bg-teal-50/60 p-4 text-sm text-slate-800 leading-relaxed">
+            <p class="font-bold text-brand mb-2">当日の流れ（再掲）</p>
+            <ul class="list-disc pl-5 space-y-1 text-slate-700">
+              <li>インターホンを鳴らしてお呼び出しください。</li>
+              <li>レッスン開始の<strong>30分前</strong>までにご来店ください。</li>
+              <li>スタッフが入館からレッスンまでご案内いたします。</li>
+            </ul>
+          </div>
+
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div class="sm:col-span-2">
+              <label class="block text-sm font-semibold text-slate-800 required" for="name">氏名</label>
+              <input class="input mt-2" type="text" id="name" name="name" autocomplete="name" required>
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-sm font-semibold text-slate-800 required" for="phone">電話番号</label>
+              <input class="input mt-2" type="tel" id="phone" name="phone" inputmode="tel" autocomplete="tel" required>
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-sm font-semibold text-slate-800 required" for="event_slot">参加希望レッスン</label>
+              <select class="input mt-2" id="event_slot" name="event_slot" required>
+                <option value="" disabled selected>日付・時間・プログラムを選択</option>
+              </select>
+              <p class="mt-1 text-xs text-slate-500">上記タイムテーブルと同じ内容から選択してください。送信データの日時欄に自動反映されます。</p>
+            </div>
+            <input type="hidden" name="visit_date" id="visit_date" value="">
+            <input type="hidden" name="visit_time" id="visit_time" value="">
+            <div class="sm:col-span-2">
+              <label class="block text-sm font-semibold text-slate-800" for="remarks">ご質問・備考</label>
+              <textarea class="input mt-2" id="remarks" name="remarks" rows="4" placeholder="複数日程の希望、同伴者など"></textarea>
+            </div>
+          </div>
+
+          <div class="rounded-xl border border-slate-200 bg-slate-50 p-5">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" name="consent" value="同意する" class="mt-1 h-4 w-4 rounded border-slate-300 text-brand focus:ring-brand" required>
+              <span class="text-sm text-slate-700 leading-relaxed">館内掲示・参加券等に記載の注意事項、3階のご利用時間（20:00まで）、事前予約のルール、当日はインターホン呼び出し・レッスン30分前来店・スタッフによるご案内に従うこと等を確認し、同意します。</span>
+            </label>
+          </div>
+
+          <div class="text-center pt-2">
+            <button type="submit" class="inline-flex items-center justify-center rounded-full bg-brand text-white font-bold px-12 py-4 text-lg shadow-md hover:bg-brand-dark transition w-full sm:w-auto">
+              送信する
+            </button>
+            <p class="mt-4 text-xs text-slate-500">送信ボタンを押すと外部スクリプトへデータが送信されます。公開前にテスト行で動作確認してください。</p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-200 bg-white">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10 text-sm text-slate-500 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <p id="footer-copy"></p>
+      <p class="text-xs text-slate-400">© JOYFIT24経堂イベント用LP（社外共有テンプレート）</p>
+    </div>
+  </footer>
+
+  <div id="toast" class="hidden fixed top-5 right-5 z-50 max-w-sm rounded-xl px-5 py-3 text-white shadow-lg transition-transform duration-300 translate-x-[120%]"></div>
+
+  <script>
+    (function () {
+      const c = window.EVENT_CONFIG;
+      document.getElementById('hero-title').textContent = c.storeName + '｜' + c.campaignTitle;
+      document.getElementById('hero-sub').textContent = c.subCatch;
+      document.getElementById('hero-period').textContent = c.periodLine;
+      document.getElementById('hero-venue').textContent = c.venueLine;
+      document.getElementById('field-store-name').value = c.storeName;
+
+      const points = document.getElementById('hero-points');
+      c.noteBullets.forEach(function (t) {
+        const li = document.createElement('li');
+        li.className = 'flex gap-2';
+        li.innerHTML = '<span class="text-teal-300 shrink-0">▸</span><span>' + t + '</span>';
+        points.appendChild(li);
+      });
+
+      function parseTimeStart(timeRange) {
+        var first = String(timeRange).split(/\u2013|\u2014|-|〜/)[0].trim();
+        var segs = first.split(':');
+        var hh = String(parseInt(segs[0], 10)).padStart(2, '0');
+        var mm = String(parseInt(segs[1], 10)).padStart(2, '0');
+        return hh + ':' + mm;
+      }
+
+      function esc(s) {
+        return String(s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      const scheduleRoot = document.getElementById('schedule-days');
+      const selectEl = document.getElementById('event_slot');
+      const visitDateEl = document.getElementById('visit_date');
+      const visitTimeEl = document.getElementById('visit_time');
+
+      (window.GW_SCHEDULE || []).forEach(function (day) {
+        const wrap = document.createElement('div');
+        wrap.className = 'rounded-2xl ring-1 ring-slate-200 bg-slate-50/80 overflow-hidden';
+        wrap.innerHTML =
+          '<div class="bg-slate-900 text-white px-4 py-3 sm:px-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">' +
+          '<h3 class="text-lg font-bold tracking-tight">' + esc(day.label) + '</h3>' +
+          '<p class="text-xs sm:text-sm text-slate-300">' + esc(day.foot) + '</p>' +
+          '</div>' +
+          '<div class="p-4 sm:p-6 space-y-8" data-day="' + esc(day.dateIso) + '"></div>';
+        const inner = wrap.querySelector('[data-day]');
+
+        day.blocks.forEach(function (block) {
+          const sub = document.createElement('div');
+          sub.innerHTML =
+            '<h4 class="text-sm font-bold text-brand uppercase tracking-wide mb-3">' + esc(block.room) + '</h4>' +
+            '<div class="overflow-hidden rounded-xl ring-1 ring-slate-200 bg-white shadow-sm">' +
+            '<table class="min-w-full text-sm">' +
+            '<thead class="bg-slate-100 text-left text-slate-700">' +
+            '<tr><th class="px-3 py-2 font-semibold w-36">時間</th><th class="px-3 py-2 font-semibold">プログラム</th>' +
+            '<th class="px-3 py-2 font-semibold w-24">難易度</th><th class="px-3 py-2 font-semibold w-32">インストラクター</th></tr></thead>' +
+            '<tbody class="divide-y divide-slate-100"></tbody></table></div>';
+          const tbody = sub.querySelector('tbody');
+
+          block.lessons.forEach(function (les) {
+            const tr = document.createElement('tr');
+            tr.innerHTML =
+              '<td class="px-3 py-2.5 font-medium text-slate-800 whitespace-nowrap">' + esc(les.time) + '</td>' +
+              '<td class="px-3 py-2.5 text-slate-800">' + esc(les.title) +
+              (les.caption ? '<p class="text-xs text-slate-500 mt-1 leading-relaxed">' + esc(les.caption) + '</p>' : '') +
+              '</td>' +
+              '<td class="px-3 py-2.5 text-slate-600">' + esc(les.difficulty) + '</td>' +
+              '<td class="px-3 py-2.5 text-slate-600">' + esc(les.instructor) + '</td>';
+            tbody.appendChild(tr);
+
+            const start = parseTimeStart(les.time);
+            const optLabel =
+              day.label + ' ' + block.room + ' ' + les.time + ' ' + les.title + '（' + les.difficulty + '／' + les.instructor + '）';
+            const opt = document.createElement('option');
+            opt.value =
+              day.label +
+              '｜' +
+              block.room +
+              '｜' +
+              les.time +
+              '｜' +
+              les.title +
+              '｜' +
+              les.instructor;
+            opt.textContent = optLabel;
+            opt.setAttribute('data-date', day.dateIso);
+            opt.setAttribute('data-time', start);
+            selectEl.appendChild(opt);
+          });
+
+          inner.appendChild(sub);
+        });
+
+        scheduleRoot.appendChild(wrap);
+      });
+
+      function syncHiddenFromSelect() {
+        const opt = selectEl.options[selectEl.selectedIndex];
+        if (!opt || !opt.getAttribute('data-date')) {
+          visitDateEl.value = '';
+          visitTimeEl.value = '';
+          return;
+        }
+        visitDateEl.value = opt.getAttribute('data-date');
+        visitTimeEl.value = opt.getAttribute('data-time') || '';
+      }
+
+      selectEl.addEventListener('change', syncHiddenFromSelect);
+
+      const nb = document.getElementById('notice-box');
+      nb.innerHTML =
+        '<p class="font-bold mb-2">ご参加前にご確認ください（POP抜粋）</p><ul class="list-disc pl-5 space-y-1">' +
+        c.noteBullets.map(function (b) { return '<li>' + esc(b) + '</li>'; }).join('') +
+        '</ul>';
+
+      document.getElementById('access-text').innerHTML =
+        '<span class="block">' + c.access.line1 + '</span><span class="block mt-2">' + c.access.line2 + '</span>';
+
+      document.getElementById('footer-copy').textContent = c.storeName + '｜' + c.campaignTitle;
+    })();
+
+    // ★ デプロイしたGAS WebアプリのURLに差し替え ★
+    const webAppUrl = 'PASTE_GAS_WEB_APP_URL_HERE';
+
+    const form = document.getElementById('kyodo-event-form');
+    const toast = document.getElementById('toast');
+
+    function showToast(message, ok) {
+      toast.textContent = message;
+      toast.classList.remove('hidden', 'bg-red-600', 'bg-brand');
+      toast.classList.add(ok ? 'bg-brand' : 'bg-red-600');
+      requestAnimationFrame(function () {
+        toast.classList.remove('translate-x-[120%]');
+      });
+      setTimeout(function () {
+        toast.classList.add('translate-x-[120%]');
+        setTimeout(function () { toast.classList.add('hidden'); }, 400);
+      }, 5000);
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!webAppUrl || webAppUrl.indexOf('PASTE_') === 0) {
+        showToast('GASのWebアプリURLを index.html 内の webAppUrl に設定してください。', false);
+        return;
+      }
+
+      const slotSelect = document.getElementById('event_slot');
+      const optSel = slotSelect ? slotSelect.options[slotSelect.selectedIndex] : null;
+      const vdEl = document.getElementById('visit_date');
+      const vtEl = document.getElementById('visit_time');
+      if (optSel && optSel.getAttribute('data-date')) {
+        vdEl.value = optSel.getAttribute('data-date');
+        vtEl.value = optSel.getAttribute('data-time') || '';
+      }
+
+      const fd = new FormData(form);
+      const vd = document.getElementById('visit_date').value;
+      const vt = document.getElementById('visit_time').value;
+      if (vd) {
+        fd.set('visit_datetime', vt ? vd + ' ' + vt : vd);
+      }
+
+      const params = new URLSearchParams();
+      fd.forEach(function (value, key) {
+        params.append(key, value);
+      });
+
+      const btn = form.querySelector('button[type="submit"]');
+      const prev = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = '送信中...';
+
+      fetch(webAppUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+        body: params.toString()
+      })
+        .then(function (r) { return r.text(); })
+        .then(function (text) {
+          var data;
+          try {
+            data = JSON.parse(text);
+          } catch (err) {
+            throw new Error('サーバーからの応答が不正です。');
+          }
+          if (data.result === 'success') {
+            form.reset();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showToast('送信が完了しました。シートに反映されているかご確認ください。', true);
+          } else {
+            throw new Error(data.message || '送信に失敗しました。');
+          }
+        })
+        .catch(function (err) {
+          showToast(err.message || '送信に失敗しました。', false);
+        })
+        .finally(function () {
+          btn.disabled = false;
+          btn.textContent = prev;
+        });
+    });
+  </script>
+</body>
+</html>
