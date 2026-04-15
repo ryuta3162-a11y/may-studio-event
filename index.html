@@ -145,7 +145,15 @@
       campaignTitle: 'ホットスタジオレッスン無料体験会',
       subCatch: '非会員様でも無料で参加できる3日間',
       mapUrl:
-        'https://www.google.com/maps?ll=35.647594,139.631688&z=16&t=m&hl=ja&gl=US&mapclient=embed&cid=3967067937404763610'
+        'https://www.google.com/maps?ll=35.647594,139.631688&z=16&t=m&hl=ja&gl=US&mapclient=embed&cid=3967067937404763610',
+      noticeBullets: [
+        '5/4〜5/6は非会員の方もご参加いただけます。',
+        'ヨガ未経験の方もぜひお申し込みください。',
+        '3階のご利用時間は20:00までです。',
+        '服装は動きやすいウェア。',
+        'タオル・飲み物等ご持参ください。',
+        '※フェイスタオル・バスタオル・ヨガマットは無料貸出可能です。数に限りがございます。'
+      ]
     };
 
     window.GW_SCHEDULE = [
@@ -331,7 +339,7 @@
             <span class="rounded-full bg-neutral-100 px-3 py-1 text-xs font-bold text-neutral-600 ring-1 ring-neutral-200 sm:text-sm">5/4〜5/6</span>
           </div>
           <p class="mt-4 text-pretty text-sm leading-relaxed text-neutral-600 sm:text-base">
-            まず<strong class="text-neutral-900">開催日</strong>をタブで選び、その日のリストから<strong class="text-neutral-900">参加希望レッスンを1つ</strong>お選びください。星（★）は難易度、プログラム名の先頭に★があるものは特別レッスンです。
+            まず<strong class="text-neutral-900">開催日</strong>をタブで選び、その日のリストから<strong class="text-neutral-900">参加希望のレッスンを1つ</strong>お選びください。星（★）は難易度です。初めての方は星1のレッスンがおすすめです。
           </p>
 
           <div id="schedule-ui" class="mt-8">
@@ -351,6 +359,8 @@
 
           <input type="hidden" name="visit_date" id="visit_date" value="">
           <input type="hidden" name="visit_time" id="visit_time" value="">
+
+          <div id="notice-box" class="mt-10 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm"></div>
         </div>
       </section>
 
@@ -526,10 +536,10 @@
           '・' +
           esc(title) +
           '）を選択中です。<br><br>' +
-          'レッスン開始の<strong class="text-[#C21642]">30分前</strong>、<strong class="text-neutral-900 text-lg">' +
+          'ご案内の為、レッスン開始の<strong class="text-[#C21642]">30分前</strong>、<strong class="text-neutral-900 text-lg">' +
           esc(formatJpClock(arriveClock)) +
-          '</strong>をめどにご来館ください。<br><br>' +
-          '館外の<strong class="text-neutral-900">インターホン</strong>をお鳴らしください。スタッフがご案内いたします。';
+          '</strong>にご来館ください。<br><br>' +
+          '当日は入り口<strong class="text-neutral-900">インターホン</strong>を押して下さい。スタッフがご案内いたします。';
         arrivalHint.classList.remove('hidden');
       }
 
@@ -747,6 +757,18 @@
         clearLessonSelectionVisual();
         setActiveScheduleDay(0);
       });
+
+      var nb = document.getElementById('notice-box');
+      if (nb && c.noticeBullets && c.noticeBullets.length) {
+        nb.innerHTML =
+          '<div class="flex flex-col sm:flex-row">' +
+          '<div class="flex shrink-0 items-center justify-center bg-[#C21642] px-5 py-5 text-center sm:w-40 sm:py-8">' +
+          '<span class="text-sm font-bold text-white sm:text-base">注意事項</span></div>' +
+          '<div class="border-t border-neutral-100 p-5 sm:border-l sm:border-t-0 sm:p-6">' +
+          '<ul class="list-disc space-y-2 pl-5 text-sm leading-relaxed text-neutral-700 sm:text-[0.9375rem]">' +
+          c.noticeBullets.map(function (b) { return '<li>' + esc(b) + '</li>'; }).join('') +
+          '</ul></div></div>';
+      }
 
       document.getElementById('footer-copy').textContent = c.storeName + '｜' + c.campaignTitle;
     })();
