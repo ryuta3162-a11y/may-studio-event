@@ -420,7 +420,7 @@
       <section id="apply" class="scroll-mt-[4.5rem] bg-white py-12 sm:scroll-mt-20 sm:py-16 lg:py-20">
         <div class="mx-auto max-w-lg px-4 sm:max-w-xl sm:px-6">
           <h2 class="text-center text-2xl font-bold text-neutral-900 sm:text-3xl">お申込み</h2>
-          <p class="mx-auto mt-2 max-w-md text-center text-sm text-neutral-600 sm:text-base">リストからレッスンを1つお選びください。選べない場合は下の「希望内容」に日時・プログラム名をご記入ください。</p>
+          <p class="mx-auto mt-2 max-w-md text-center text-sm text-neutral-600 sm:text-base">リストから参加希望レッスンを1つお選びください。</p>
 
           <div class="mt-10 space-y-6 rounded-2xl border border-neutral-200 bg-neutral-50/50 p-6 shadow-lg sm:p-8">
             <div>
@@ -434,11 +434,6 @@
             <div>
               <label class="block text-sm font-semibold text-neutral-800 required" for="phone">電話番号</label>
               <input class="input mt-2" type="tel" id="phone" name="phone" inputmode="tel" autocomplete="tel" required>
-            </div>
-            <div>
-              <label class="block text-sm font-semibold text-neutral-800" for="lesson_memo">希望内容（レッスンが選べない場合）</label>
-              <textarea class="input mt-2" id="lesson_memo" name="lesson_memo" rows="3" placeholder="例）5月5日 10:45のベーシックヨガに参加希望"></textarea>
-              <p class="mt-1.5 text-xs text-neutral-500">上のリストから選べる場合は空欄で構いません。</p>
             </div>
             <div>
               <label class="block text-sm font-semibold text-neutral-800" for="remarks">備考</label>
@@ -800,7 +795,7 @@
       document.getElementById('footer-copy').textContent = c.storeName + '｜' + c.campaignTitle;
     })();
 
-    var webAppUrl = 'PASTE_GAS_WEB_APP_URL_HERE';
+    var webAppUrl = 'https://script.google.com/macros/s/AKfycbyqM_9syn-F5a8JEIfuyk5zonrNl_S4WYttsosVAdtfffTftJf14awtdVyO9I4Bf9MK/exec';
 
     var form = document.getElementById('kyodo-event-form');
     var toast = document.getElementById('toast');
@@ -826,9 +821,8 @@
       }
 
       var chosen = form.querySelector('input[name="event_slot"]:checked');
-      var memo = String(form.lesson_memo.value || '').trim();
-      if (!chosen && !memo) {
-        showToast('参加希望のレッスンを1つお選びください。選べない場合は「希望内容」にご記入ください。', false);
+      if (!chosen) {
+        showToast('参加希望のレッスンを1つお選びください。', false);
         document.getElementById('schedule').scrollIntoView({ behavior: 'smooth', block: 'start' });
         return;
       }
@@ -853,17 +847,10 @@
       var fd = new FormData(form);
       var vd = vdEl.value;
       var vt = vtEl.value;
-      if (chosen) {
-        fd.set('event_slot', chosen.value);
-        fd.set('visit_date', vd);
-        fd.set('visit_time', vt);
-        fd.set('visit_datetime', vt ? vd + ' ' + vt : vd);
-      } else {
-        fd.set('event_slot', '');
-        fd.set('visit_date', '');
-        fd.set('visit_time', '');
-        fd.set('visit_datetime', memo);
-      }
+      fd.set('event_slot', chosen.value);
+      fd.set('visit_date', vd);
+      fd.set('visit_time', vt);
+      fd.set('visit_datetime', vt ? vd + ' ' + vt : vd);
 
       var params = new URLSearchParams();
       fd.forEach(function (value, key) {

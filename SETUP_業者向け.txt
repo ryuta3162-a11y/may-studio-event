@@ -7,14 +7,15 @@ JOYFIT24経堂 5月スタジオイベント LP — セットアップ手順
 
 ■ スプレッドシート
 URL（スプレッドシートIDはコード内にも記載）:
-https://docs.google.com/spreadsheets/d/1RPUw0slNCit9ZwJgINGfv89oc2Hxw8zzAZyMt6g_QuY/edit
+https://docs.google.com/spreadsheets/d/1Eba3Uvn4lRK5z4hshHdsOav6yMrpvQov6bT_5TWINag/edit
 
 gid=799051187 のタブ名をブラウザ上で確認し、gas/Code.gs の SHEET_NAME を同じ名前に変更してください。
 
 ■ シート1行目（推奨ヘッダー順）
-タイムスタンプ, フォーム種別, 店舗名, 氏名, メールアドレス, 電話番号, 参加希望レッスン, 参加希望日, 希望開始時間, 参加希望日時まとめ, 希望内容（自由記入）, 備考, 同意
+タイムスタンプ, 申込ID, フォーム種別, 店舗名, 氏名, メールアドレス, 電話番号, 参加希望レッスン, 参加希望日, 希望開始時間, 参加希望日時まとめ, 希望内容（自由記入）, 備考, 同意, 申請完了メール送信日時, 管理者通知送信日時, リマインド送信状態, リマインド送信日時
 
-※LPは氏名・メール・電話・参加希望（リスト選択または自由記入）・備考・同意を取得します。既存シート列がある場合は gas/Code.gs の HEADER_ROW と appendRow を合わせてください。
+※LPは氏名・メール・電話・参加希望（リスト選択または自由記入）・備考・同意を取得します。
+※GAS最新版では「申込ID」「通知送信ログ」「リマインド送信ログ」も保存します。
 
 既に別形式の列がある場合:
 - 既存1行目に合わせて gas/Code.gs の HEADER_ROW と appendRow の配列順を編集する
@@ -28,6 +29,27 @@ gid=799051187 のタブ名をブラウザ上で確認し、gas/Code.gs の SHEET
    - 次のユーザーとして実行: 自分
    - アクセスできるユーザー: 全員（テスト後に制限しても可）
 5. 発行されたURLを index.html 内の定数 webAppUrl に貼り付け
+
+■ 通知メール設定（今回追加）
+- 管理者通知先（3名）:
+  - r-kusaka@okamoto-group.co.jp
+  - jf-kyoudou@okamoto-group.co.jp
+  - yuka-hachiya@okamoto-group.co.jp
+- 申請完了メールの返信先（replyTo）:
+  - jf-kyoudou@okamoto-group.co.jp
+- 送信者表示名:
+  - JOYFIT24経堂
+
+【重要】「jf-kyoudou@okamoto-group.co.jp から送信」にする場合
+- Apps Script 実行アカウントに Gmail 送信エイリアス設定が必要です。
+- gas/Code.gs の USE_GMAIL_ALIAS_FROM を true にして運用します。
+- エイリアス未設定時は false のまま運用してください（replyTo は jf-kyoudou になります）。
+
+■ リマインドメール設定（前日送信）
+1. Apps Script エディタで関数 setupReminderTrigger を1回実行
+2. 承認ダイアログで許可
+3. これで毎日18:00（スクリプトTZ）に sendReminderBatch が実行されます
+4. 試験送信は sendReminderBatch を手動実行
 
 ■ 文言・スケジュールの更新
 - index.html 内の EVENT_CONFIG（キャッチ・期間・注意事項）と window.GW_SCHEDULE を、掲示物の内容に合わせて更新してください。

@@ -3,7 +3,7 @@
  *
  * 手順（概要）:
  * 1. 対象スプレッドシートを開く
- *    https://docs.google.com/spreadsheets/d/1RPUw0slNCit9ZwJgINGfv89oc2Hxw8zzAZyMt6g_QuY/edit
+ *    https://docs.google.com/spreadsheets/d/1Eba3Uvn4lRK5z4hshHdsOav6yMrpvQov6bT_5TWINag/edit
  * 2. gid=799051187 のシート（タブ）名を確認し、下の SHEET_NAME を一致させる
  * 3. 1行目に HEADER_ROW の列名をその順序で貼り付ける（既存列がある場合は Code.gs 側を合わせる／メール・希望内容列を追加）
  * 4. 本ファイルを「拡張機能」>「Apps Script」に貼り付け
@@ -13,13 +13,39 @@
  * 6. 発行されたURLを index.html の webAppUrl に貼り付け
  */
 
-var SPREADSHEET_ID = '1RPUw0slNCit9ZwJgINGfv89oc2Hxw8zzAZyMt6g_QuY';
+var SPREADSHEET_ID = '1Eba3Uvn4lRK5z4hshHdsOav6yMrpvQov6bT_5TWINag';
 /** シートのタブ名（gid799051187のシート名に合わせて変更） */
-var SHEET_NAME = 'シート1';
+var SHEET_NAME = '5月スタジオイベント';
+/** スプレッドシートURL（案内用） */
+var SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/1Eba3Uvn4lRK5z4hshHdsOav6yMrpvQov6bT_5TWINag/edit';
+
+/** 通知先管理者 */
+var ADMIN_EMAILS = [
+  'r-kusaka@okamoto-group.co.jp',
+  'jf-kyoudou@okamoto-group.co.jp',
+  'yuka-hachiya@okamoto-group.co.jp'
+];
+
+/** 申請完了メールの返信先（差出人として使いたいアドレス） */
+var REPLY_TO_EMAIL = 'jf-kyoudou@okamoto-group.co.jp';
+/** 表示名 */
+var SENDER_NAME = 'JOYFIT24経堂';
+/** Gmailエイリアスが設定済みなら有効化（true） */
+var USE_GMAIL_ALIAS_FROM = false;
+/** Gmailエイリアスで送る場合の from アドレス */
+var GMAIL_ALIAS_FROM = 'jf-kyoudou@okamoto-group.co.jp';
+
+/** リマインド送信対象（日数前） */
+var REMINDER_DAYS_BEFORE = 1;
+/** リマインド一括送信上限（1回実行あたり） */
+var REMINDER_BATCH_LIMIT = 100;
+/** スクリプトのタイムゾーン */
+var TZ = 'Asia/Tokyo';
 
 /** 1行目のヘッダー（この順でデータを書き込みます） */
 var HEADER_ROW = [
   'タイムスタンプ',
+  '申込ID',
   'フォーム種別',
   '店舗名',
   '氏名',
@@ -31,7 +57,11 @@ var HEADER_ROW = [
   '参加希望日時まとめ',
   '希望内容（自由記入）',
   '備考',
-  '同意'
+  '同意',
+  '申請完了メール送信日時',
+  '管理者通知送信日時',
+  'リマインド送信状態',
+  'リマインド送信日時'
 ];
 
 function doGet(e) {
@@ -50,6 +80,7 @@ function doPost(e) {
   try {
     var p = normalizeParams_(e);
     validateParams_(p);
+    var requestId = buildRequestId_();
 
     var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
     var sheet = ss.getSheetByName(SHEET_NAME);
@@ -61,6 +92,7 @@ function doPost(e) {
 
     var row = [
       new Date(),
+      requestId,
       p.formType,
       p.store_name,
       p.name,
@@ -72,12 +104,42 @@ function doPost(e) {
       p.visit_datetime,
       p.lesson_memo,
       p.remarks,
-      p.consent
+      p.consent,
+      '',
+      '',
+      '未送信',
+      ''
     ];
 
-    sheet.appendRow(row);
+    var rowNumber = sheet.getLastRow() + 1;
+    sheet.getRange(rowNumber, 1, 1, row.length).setValues([row]);
 
-    return jsonResponse({ result: 'success' });
+    var confirmedAt = '';
+    var adminNotifiedAt = '';
+    try {
+      sendApplicantCompletedMail_(p, requestId);
+      confirmedAt = formatDateTime_(new Date());
+    } catch (mailErr) {
+      Logger.log('applicant mail error: ' + mailErr);
+    }
+    try {
+      sendAdminNotificationMail_(p, requestId, rowNumber);
+      adminNotifiedAt = formatDateTime_(new Date());
+    } catch (adminErr) {
+      Logger.log('admin mail error: ' + adminErr);
+    }
+
+    if (confirmedAt) {
+      sheet.getRange(rowNumber, getHeaderIndex_('申請完了メール送信日時')).setValue(confirmedAt);
+    }
+    if (adminNotifiedAt) {
+      sheet.getRange(rowNumber, getHeaderIndex_('管理者通知送信日時')).setValue(adminNotifiedAt);
+    }
+
+    return jsonResponse({
+      result: 'success',
+      requestId: requestId
+    });
   } catch (err) {
     return jsonResponse({ result: 'error', message: err.message || String(err) });
   } finally {
@@ -129,11 +191,195 @@ function validateParams_(p) {
 }
 
 /**
+ * 前日リマインド送信（時間主導トリガーで1日1回推奨）
+ * 例: 毎日 18:00 実行
+ */
+function sendReminderBatch() {
+  var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) throw new Error('シートが見つかりません: ' + SHEET_NAME);
+  ensureHeaderRow_(sheet);
+
+  var headerMap = buildHeaderMap_(sheet);
+  var last = sheet.getLastRow();
+  if (last < 2) return;
+  var values = sheet.getRange(2, 1, last - 1, sheet.getLastColumn()).getValues();
+
+  var sentCount = 0;
+  var targetDate = new Date();
+  targetDate.setDate(targetDate.getDate() + REMINDER_DAYS_BEFORE);
+  var targetYmd = formatYmd_(targetDate);
+
+  for (var i = 0; i < values.length; i++) {
+    if (sentCount >= REMINDER_BATCH_LIMIT) break;
+    var row = values[i];
+    var rowNo = i + 2;
+    var status = String(row[headerMap['リマインド送信状態']] || '');
+    var email = String(row[headerMap['メールアドレス']] || '').trim();
+    var visitDate = String(row[headerMap['参加希望日']] || '').trim();
+    if (!email || !visitDate) continue;
+    if (status === '送信済') continue;
+    if (visitDate !== targetYmd) continue;
+
+    var p = {
+      name: String(row[headerMap['氏名']] || ''),
+      store_name: String(row[headerMap['店舗名']] || 'JOYFIT24経堂'),
+      event_slot: String(row[headerMap['参加希望レッスン']] || ''),
+      visit_date: visitDate,
+      visit_time: String(row[headerMap['希望開始時間']] || ''),
+      visit_datetime: String(row[headerMap['参加希望日時まとめ']] || ''),
+      lesson_memo: String(row[headerMap['希望内容（自由記入）']] || ''),
+      phone: String(row[headerMap['電話番号']] || ''),
+      email: email
+    };
+    var requestId = String(row[headerMap['申込ID']] || '');
+
+    try {
+      sendApplicantReminderMail_(p, requestId);
+      sheet.getRange(rowNo, headerMap['リマインド送信状態'] + 1).setValue('送信済');
+      sheet.getRange(rowNo, headerMap['リマインド送信日時'] + 1).setValue(formatDateTime_(new Date()));
+      sentCount += 1;
+    } catch (err) {
+      Logger.log('reminder send failed row ' + rowNo + ': ' + err);
+      sheet.getRange(rowNo, headerMap['リマインド送信状態'] + 1).setValue('送信失敗');
+    }
+  }
+}
+
+function setupReminderTrigger() {
+  var fn = 'sendReminderBatch';
+  var triggers = ScriptApp.getProjectTriggers();
+  for (var i = 0; i < triggers.length; i++) {
+    if (triggers[i].getHandlerFunction() === fn) {
+      ScriptApp.deleteTrigger(triggers[i]);
+    }
+  }
+  ScriptApp.newTrigger(fn).timeBased().everyDays(1).atHour(18).create();
+}
+
+function sendApplicantCompletedMail_(p, requestId) {
+  var to = p.email.trim();
+  var subject = '【申込完了】JOYFIT24経堂 ホットスタジオ無料体験会';
+  var selected = p.event_slot && p.event_slot.trim() ? p.event_slot : '（自由記入）' + p.lesson_memo;
+  var body =
+    p.name + ' 様\n\n' +
+    'この度は、JOYFIT24経堂 ホットスタジオレッスン無料体験会へお申し込みいただきありがとうございます。\n' +
+    '以下内容で受け付けました。\n\n' +
+    '■申込ID\n' + requestId + '\n\n' +
+    '■お申し込み内容\n' +
+    'お名前: ' + p.name + '\n' +
+    'メール: ' + p.email + '\n' +
+    '電話番号: ' + p.phone + '\n' +
+    '参加希望: ' + selected + '\n' +
+    '希望日時: ' + (p.visit_datetime || p.visit_date || '未指定') + '\n' +
+    (p.remarks ? '備考: ' + p.remarks + '\n' : '') + '\n' +
+    '■当日の流れ（要確認）\n' +
+    '1) インターホンを鳴らしてお呼び出しください。スタッフが開錠します。\n' +
+    '2) 2階でタオルやマットをお渡しし、3階ロッカールームでご準備いただきます。\n' +
+    '3) レッスン開始10分前からスタジオに入館できます。\n\n' +
+    '※本メールは自動送信です。\n' +
+    '※内容変更・キャンセルは本メールへご返信ください。';
+  sendMail_(to, subject, body);
+}
+
+function sendApplicantReminderMail_(p, requestId) {
+  var to = p.email.trim();
+  var subject = '【前日リマインド】明日はJOYFIT24経堂 無料体験レッスンです';
+  var selected = p.event_slot && p.event_slot.trim() ? p.event_slot : '（自由記入）' + p.lesson_memo;
+  var body =
+    p.name + ' 様\n\n' +
+    '明日は、JOYFIT24経堂 ホットスタジオ無料体験会のご予約日です。\n\n' +
+    '■申込ID\n' + requestId + '\n\n' +
+    '■ご予約内容\n' +
+    '参加希望: ' + selected + '\n' +
+    '希望日時: ' + (p.visit_datetime || p.visit_date || '未指定') + '\n\n' +
+    '■当日の流れ\n' +
+    '1) インターホンを鳴らしてお呼び出しください。スタッフが開錠します。\n' +
+    '2) 2階でタオルやマットをお渡しし、3階ロッカールームでご準備いただきます。\n' +
+    '3) レッスン開始10分前からスタジオに入館できます。\n\n' +
+    '■持ち物\n' +
+    '動きやすいウェア、飲み物\n' +
+    '※フェイスタオル・バスタオル・ヨガマットは無料貸出（数に限りあり）\n\n' +
+    'ご来館をお待ちしております。';
+  sendMail_(to, subject, body);
+}
+
+function sendAdminNotificationMail_(p, requestId, rowNumber) {
+  var to = ADMIN_EMAILS.join(',');
+  var subject = '【新規申込】JOYFIT24経堂 ホットスタジオ無料体験会';
+  var selected = p.event_slot && p.event_slot.trim() ? p.event_slot : '（自由記入）' + p.lesson_memo;
+  var body =
+    '新しい申込がありました。\n\n' +
+    '■申込ID\n' + requestId + '\n' +
+    '■受付時刻\n' + formatDateTime_(new Date()) + '\n\n' +
+    '■申込者情報\n' +
+    '氏名: ' + p.name + '\n' +
+    'メール: ' + p.email + '\n' +
+    '電話番号: ' + p.phone + '\n\n' +
+    '■申込内容\n' +
+    '参加希望: ' + selected + '\n' +
+    '希望日時: ' + (p.visit_datetime || p.visit_date || '未指定') + '\n' +
+    (p.remarks ? '備考: ' + p.remarks + '\n' : '') +
+    '\n' +
+    'シート行: ' + rowNumber + '\n' +
+    'スプレッドシート: ' + SPREADSHEET_URL;
+  sendMail_(to, subject, body);
+}
+
+function sendMail_(to, subject, body) {
+  if (USE_GMAIL_ALIAS_FROM) {
+    GmailApp.sendEmail(to, subject, body, {
+      name: SENDER_NAME,
+      from: GMAIL_ALIAS_FROM,
+      replyTo: REPLY_TO_EMAIL
+    });
+    return;
+  }
+  MailApp.sendEmail({
+    to: to,
+    subject: subject,
+    body: body,
+    name: SENDER_NAME,
+    replyTo: REPLY_TO_EMAIL
+  });
+}
+
+function buildRequestId_() {
+  var d = new Date();
+  return 'KYODO-' + Utilities.formatDate(d, TZ, 'yyyyMMdd-HHmmss') + '-' + Utilities.getUuid().slice(0, 8).toUpperCase();
+}
+
+function formatDateTime_(d) {
+  return Utilities.formatDate(d, TZ, 'yyyy/MM/dd HH:mm:ss');
+}
+
+function formatYmd_(d) {
+  return Utilities.formatDate(d, TZ, 'yyyy-MM-dd');
+}
+
+function buildHeaderMap_(sheet) {
+  var h = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  var map = {};
+  for (var i = 0; i < h.length; i++) {
+    map[String(h[i])] = i;
+  }
+  return map;
+}
+
+function getHeaderIndex_(headerName) {
+  for (var i = 0; i < HEADER_ROW.length; i++) {
+    if (HEADER_ROW[i] === headerName) return i + 1;
+  }
+  throw new Error('header not found: ' + headerName);
+}
+
+/**
  * 1行目が空、または先頭セルがタイムスタンプでない場合にヘッダーを書き込みます。
  * 既存データがあるシートでは手動でヘッダーを合わせることを推奨します。
  */
 function ensureHeaderRow_(sheet) {
-  var first = sheet.getRange(1, 1, 1, HEADER_ROW.length).getValues()[0];
+  var col = Math.max(sheet.getLastColumn(), HEADER_ROW.length);
+  var first = sheet.getRange(1, 1, 1, col).getValues()[0];
   var empty = first.every(function (c) { return c === '' || c === null; });
   if (empty) {
     sheet.getRange(1, 1, 1, HEADER_ROW.length).setValues([HEADER_ROW]);
@@ -142,5 +388,12 @@ function ensureHeaderRow_(sheet) {
   if (String(first[0]) !== HEADER_ROW[0]) {
     // 既存列と異なる場合は上書きしない（データ破壊防止）
     // 必要なら手動で1行目を HEADER_ROW に合わせてください。
+    return;
+  }
+  // 既存ヘッダーに不足列がある場合は右側を補完
+  for (var i = 0; i < HEADER_ROW.length; i++) {
+    if (!first[i]) {
+      sheet.getRange(1, i + 1).setValue(HEADER_ROW[i]);
+    }
   }
 }
