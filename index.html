@@ -47,7 +47,29 @@
     }
     .input:focus-visible { outline: 2px solid var(--jf-red); outline-offset: 2px; }
     .required::after { content: ' *'; color: var(--jf-red); font-weight: 700; }
-    select.input { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23737373'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 1.25rem; padding-right: 2.5rem; appearance: none; }
+    .lesson-radio:focus-visible + .lesson-card-inner {
+      outline: 2px solid #C21642;
+      outline-offset: 2px;
+    }
+    .lesson-radio:checked + .lesson-card-inner {
+      border-color: #C21642;
+      background-color: rgba(194, 22, 66, 0.07);
+      box-shadow: 0 0 0 1px #C21642;
+    }
+    .fake-radio {
+      margin-top: 0.125rem;
+      height: 1.25rem;
+      width: 1.25rem;
+      flex-shrink: 0;
+      border-radius: 9999px;
+      border: 2px solid #d4d4d4;
+      background: #fff;
+    }
+    .lesson-radio:checked + .lesson-card-inner .fake-radio {
+      border-color: #C21642;
+      background-color: #C21642;
+      box-shadow: inset 0 0 0 3px #fff;
+    }
   </style>
 </head>
 <body class="bg-neutral-100 text-neutral-900 antialiased">
@@ -202,90 +224,96 @@
   </section>
 
   <main id="main" class="bg-neutral-100">
-    <section id="schedule" class="scroll-mt-[4.5rem] border-b border-neutral-200 bg-white py-12 sm:scroll-mt-20 sm:py-16 lg:py-20">
-      <div class="mx-auto max-w-6xl px-4 sm:px-6">
-        <div class="flex flex-wrap items-end justify-between gap-4 border-b border-neutral-900 pb-4">
-          <div>
-            <p class="text-xs font-bold tracking-wider text-[#C21642] sm:text-sm">SCHEDULE</p>
-            <h2 class="mt-1 text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl">レッスンスケジュール</h2>
-          </div>
-          <span class="rounded-full bg-neutral-100 px-3 py-1 text-xs font-bold text-neutral-600 ring-1 ring-neutral-200 sm:text-sm">5/4〜5/6</span>
-        </div>
-        <p class="mt-4 max-w-3xl text-pretty text-sm leading-relaxed text-neutral-600 sm:text-base">星（★）は難易度です。プログラム名の先頭に★があるものは特別レッスンです。表は横にスクロールできます。</p>
-        <div id="schedule-days" class="mt-10 space-y-10 lg:space-y-12"></div>
-        <div id="notice-box" class="mt-10 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm"></div>
-      </div>
-    </section>
+    <form id="kyodo-event-form" action="#" method="post">
+      <input type="hidden" name="formType" value="kyodo_may_studio_event">
+      <input type="hidden" name="store_name" id="field-store-name" value="">
 
-    <section class="border-b border-neutral-200 bg-neutral-50 py-12 sm:py-16">
-      <div class="mx-auto grid max-w-6xl gap-6 px-4 sm:grid-cols-2 sm:gap-8 sm:px-6">
-        <div class="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-7">
-          <h2 class="text-lg font-bold text-neutral-900 sm:text-xl">ご来店の流れ<span class="ml-2 text-sm font-normal text-neutral-500">（当日）</span></h2>
-          <ol class="mt-5 space-y-4 text-sm leading-relaxed text-neutral-700 sm:text-[0.9375rem]">
-            <li class="flex gap-3">
-              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C21642] text-sm font-bold text-white">1</span>
-              <span><strong class="text-neutral-900">インターホン</strong>を鳴らしてお呼び出しください。</span>
-            </li>
-            <li class="flex gap-3">
-              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C21642] text-sm font-bold text-white">2</span>
-              <span>レッスン開始の<strong class="text-neutral-900">30分前</strong>までにご来店ください。</span>
-            </li>
-            <li class="flex gap-3">
-              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C21642] text-sm font-bold text-white">3</span>
-              <span><strong class="text-neutral-900">スタッフがご案内</strong>いたします。</span>
-            </li>
-          </ol>
-        </div>
-        <div class="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-7">
-          <h2 class="text-lg font-bold text-neutral-900 sm:text-xl">店舗</h2>
-          <p class="mt-5 text-sm leading-relaxed text-neutral-600 sm:text-[0.9375rem]" id="access-text"></p>
-        </div>
-      </div>
-    </section>
-
-    <section id="apply" class="scroll-mt-[4.5rem] bg-white py-12 sm:scroll-mt-20 sm:py-16 lg:py-20">
-      <div class="mx-auto max-w-lg px-4 sm:max-w-xl sm:px-6">
-        <h2 class="text-center text-2xl font-bold text-neutral-900 sm:text-3xl">お申込み</h2>
-        <p class="mx-auto mt-2 max-w-md text-center text-sm text-neutral-600 sm:text-base">お名前・電話番号でお申込みいただけます。</p>
-
-        <form id="kyodo-event-form" class="mt-10 space-y-6 rounded-2xl border border-neutral-200 bg-neutral-50/50 p-6 shadow-lg sm:p-8">
-          <input type="hidden" name="formType" value="kyodo_may_studio_event">
-          <input type="hidden" name="store_name" id="field-store-name">
-
-          <div>
-            <label class="block text-sm font-semibold text-neutral-800 required" for="name">氏名</label>
-            <input class="input mt-2" type="text" id="name" name="name" autocomplete="name" required>
+      <section id="schedule" class="scroll-mt-[4.5rem] border-b border-neutral-200 bg-white py-12 sm:scroll-mt-20 sm:py-16 lg:py-20">
+        <div class="mx-auto max-w-3xl px-4 sm:px-6">
+          <div class="flex flex-wrap items-end justify-between gap-4 border-b border-neutral-900 pb-4">
+            <div>
+              <p class="text-xs font-bold tracking-wider text-[#C21642] sm:text-sm">SCHEDULE</p>
+              <h2 class="mt-1 text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl">レッスンスケジュール</h2>
+            </div>
+            <span class="rounded-full bg-neutral-100 px-3 py-1 text-xs font-bold text-neutral-600 ring-1 ring-neutral-200 sm:text-sm">5/4〜5/6</span>
           </div>
-          <div>
-            <label class="block text-sm font-semibold text-neutral-800 required" for="phone">電話番号</label>
-            <input class="input mt-2" type="tel" id="phone" name="phone" inputmode="tel" autocomplete="tel" required>
+          <p class="mt-4 text-pretty text-sm leading-relaxed text-neutral-600 sm:text-base">
+            下のリストから<strong class="text-neutral-900">参加希望のレッスンを1つ</strong>お選びください（丸いボタンで選択）。星（★）は難易度、プログラム名の先頭に★があるものは特別レッスンです。
+          </p>
+
+          <div id="schedule-days" class="mt-8 space-y-10" role="group" aria-label="レッスン一覧"></div>
+
+          <div id="arrival-hint" class="mt-8 hidden rounded-xl border-2 border-[#C21642] bg-red-50/90 p-5 shadow-sm sm:p-6" role="status" aria-live="polite">
+            <p class="text-sm font-bold text-[#C21642] sm:text-base">ご来店の目安</p>
+            <p id="arrival-hint-body" class="mt-3 text-sm leading-relaxed text-neutral-800 sm:text-base"></p>
           </div>
-          <div>
-            <label class="block text-sm font-semibold text-neutral-800 required" for="event_slot">参加希望レッスン</label>
-            <select class="input mt-2" id="event_slot" name="event_slot" required>
-              <option value="" disabled selected>選択してください</option>
-            </select>
-          </div>
+
           <input type="hidden" name="visit_date" id="visit_date" value="">
           <input type="hidden" name="visit_time" id="visit_time" value="">
-          <div>
-            <label class="block text-sm font-semibold text-neutral-800" for="remarks">備考</label>
-            <textarea class="input mt-2" id="remarks" name="remarks" rows="3" placeholder="任意"></textarea>
-          </div>
 
-          <div class="rounded-xl border border-neutral-200 bg-white p-4 sm:p-5">
-            <label class="flex cursor-pointer items-start gap-3">
-              <input type="checkbox" name="consent" value="同意する" class="mt-1 h-[1.125rem] w-[1.125rem] shrink-0 rounded border-neutral-300 text-[#C21642] focus:ring-[#C21642]" required>
-              <span class="text-sm leading-relaxed text-neutral-700">注意事項・3階20時まで・事前予約、および当日のインターホン／30分前来店／スタッフ案内に同意します。</span>
-            </label>
-          </div>
+          <div id="notice-box" class="mt-10 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm"></div>
+        </div>
+      </section>
 
-          <div class="pt-1 text-center">
-            <button type="submit" class="inline-flex min-h-[52px] w-full items-center justify-center rounded-full bg-[#C21642] px-10 text-base font-bold text-white shadow-md transition hover:bg-[#9d1135] active:scale-[0.99] sm:w-auto sm:min-w-[200px]">送信する</button>
+      <section class="border-b border-neutral-200 bg-neutral-50 py-12 sm:py-16">
+        <div class="mx-auto grid max-w-6xl gap-6 px-4 sm:grid-cols-2 sm:gap-8 sm:px-6">
+          <div class="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-7">
+            <h2 class="text-lg font-bold text-neutral-900 sm:text-xl">ご来店の流れ<span class="ml-2 text-sm font-normal text-neutral-500">（当日）</span></h2>
+            <ol class="mt-5 space-y-4 text-sm leading-relaxed text-neutral-700 sm:text-[0.9375rem]">
+              <li class="flex gap-3">
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C21642] text-sm font-bold text-white">1</span>
+                <span><strong class="text-neutral-900">インターホン</strong>を鳴らしてお呼び出しください。</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C21642] text-sm font-bold text-white">2</span>
+                <span>レッスン開始の<strong class="text-neutral-900">30分前</strong>までにご来店ください。</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C21642] text-sm font-bold text-white">3</span>
+                <span><strong class="text-neutral-900">スタッフがご案内</strong>いたします。</span>
+              </li>
+            </ol>
           </div>
-        </form>
-      </div>
-    </section>
+          <div class="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-7">
+            <h2 class="text-lg font-bold text-neutral-900 sm:text-xl">店舗</h2>
+            <p class="mt-5 text-sm leading-relaxed text-neutral-600 sm:text-[0.9375rem]" id="access-text"></p>
+          </div>
+        </div>
+      </section>
+
+      <section id="apply" class="scroll-mt-[4.5rem] bg-white py-12 sm:scroll-mt-20 sm:py-16 lg:py-20">
+        <div class="mx-auto max-w-lg px-4 sm:max-w-xl sm:px-6">
+          <h2 class="text-center text-2xl font-bold text-neutral-900 sm:text-3xl">お申込み</h2>
+          <p class="mx-auto mt-2 max-w-md text-center text-sm text-neutral-600 sm:text-base">上でレッスンをお選びのうえ、お名前・電話番号をご入力ください。</p>
+
+          <div class="mt-10 space-y-6 rounded-2xl border border-neutral-200 bg-neutral-50/50 p-6 shadow-lg sm:p-8">
+            <div>
+              <label class="block text-sm font-semibold text-neutral-800 required" for="name">氏名</label>
+              <input class="input mt-2" type="text" id="name" name="name" autocomplete="name" required>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-neutral-800 required" for="phone">電話番号</label>
+              <input class="input mt-2" type="tel" id="phone" name="phone" inputmode="tel" autocomplete="tel" required>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-neutral-800" for="remarks">備考</label>
+              <textarea class="input mt-2" id="remarks" name="remarks" rows="3" placeholder="任意"></textarea>
+            </div>
+
+            <div class="rounded-xl border border-neutral-200 bg-white p-4 sm:p-5">
+              <label class="flex cursor-pointer items-start gap-3">
+                <input type="checkbox" name="consent" value="同意する" class="mt-1 h-[1.125rem] w-[1.125rem] shrink-0 rounded border-neutral-300 text-[#C21642] focus:ring-[#C21642]" required>
+                <span class="text-sm leading-relaxed text-neutral-700">注意事項・3階20時まで・事前予約、および当日のインターホン／30分前来店／スタッフ案内に同意します。</span>
+              </label>
+            </div>
+
+            <div class="pt-1 text-center">
+              <button type="submit" class="inline-flex min-h-[52px] w-full items-center justify-center rounded-full bg-[#C21642] px-10 text-base font-bold text-white shadow-md transition hover:bg-[#9d1135] active:scale-[0.99] sm:w-auto sm:min-w-[200px]">送信する</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </form>
   </main>
 
   <footer class="bg-[#C21642] pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-12 text-white">
@@ -335,73 +363,99 @@
           .replace(/"/g, '&quot;');
       }
 
+      function pad2(n) {
+        return String(n).padStart(2, '0');
+      }
+
+      function clockMinusMinutes(clock, minsSub) {
+        var p = clock.split(':');
+        var t = parseInt(p[0], 10) * 60 + parseInt(p[1], 10) - minsSub;
+        if (t < 0) t = 0;
+        return pad2(Math.floor(t / 60)) + ':' + pad2(t % 60);
+      }
+
+      function formatJpClock(clock) {
+        var p = clock.split(':');
+        var h = parseInt(p[0], 10);
+        var m = parseInt(p[1], 10);
+        if (m === 0) return h + '時';
+        return h + '時' + m + '分';
+      }
+
       const scheduleRoot = document.getElementById('schedule-days');
-      const selectEl = document.getElementById('event_slot');
       const visitDateEl = document.getElementById('visit_date');
       const visitTimeEl = document.getElementById('visit_time');
+      const arrivalHint = document.getElementById('arrival-hint');
+      const arrivalBody = document.getElementById('arrival-hint-body');
+
+      var lessonIndex = 0;
+
+      function syncFromLessonRadio(radio) {
+        if (!radio || !radio.checked) {
+          visitDateEl.value = '';
+          visitTimeEl.value = '';
+          arrivalHint.classList.add('hidden');
+          return;
+        }
+        visitDateEl.value = radio.getAttribute('data-date') || '';
+        visitTimeEl.value = radio.getAttribute('data-time') || '';
+        var startClock = radio.getAttribute('data-time') || '';
+        var arriveClock = clockMinusMinutes(startClock, 30);
+        var dayLabel = radio.getAttribute('data-day-label') || '';
+        var room = radio.getAttribute('data-room') || '';
+        var title = radio.getAttribute('data-title') || '';
+        var timeRange = radio.getAttribute('data-time-range') || '';
+        arrivalBody.innerHTML =
+          '<strong class="text-neutral-900">' +
+          esc(dayLabel) +
+          '</strong>／<strong class="text-neutral-900">' +
+          esc(timeRange) +
+          '</strong>開始（' +
+          esc(room) +
+          '・' +
+          esc(title) +
+          '）を選択中です。<br><br>' +
+          'レッスン開始の<strong class="text-[#C21642]">30分前</strong>、<strong class="text-neutral-900 text-lg">' +
+          esc(formatJpClock(arriveClock)) +
+          '</strong>をめどにご来館ください。<br><br>' +
+          '館外の<strong class="text-neutral-900">インターホン</strong>をお鳴らしください。スタッフがご案内いたします。';
+        arrivalHint.classList.remove('hidden');
+      }
 
       (window.GW_SCHEDULE || []).forEach(function (day) {
         const wrap = document.createElement('div');
-        wrap.className =
-          'overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-md ring-1 ring-black/[0.03]';
-        wrap.innerHTML =
-          '<div class="flex flex-col gap-1 bg-[#C21642] px-4 py-3.5 text-white sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-4">' +
+        wrap.className = 'overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-md ring-1 ring-neutral-200/80';
+        const head = document.createElement('div');
+        head.className =
+          'flex flex-col gap-1 bg-[#C21642] px-4 py-3.5 text-white sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-4';
+        head.innerHTML =
           '<h3 class="text-base font-bold sm:text-lg">' +
           esc(day.label) +
-          '</h3>' +
-          '<p class="text-xs text-white/90 sm:text-sm">' +
+          '</h3><p class="text-xs text-white/90 sm:text-sm">' +
           esc(day.foot) +
-          '</p>' +
-          '</div>' +
-          '<div class="space-y-8 p-4 sm:space-y-10 sm:p-6" data-day="' +
-          esc(day.dateIso) +
-          '"></div>';
-        const inner = wrap.querySelector('[data-day]');
+          '</p>';
+        wrap.appendChild(head);
+
+        const listHost = document.createElement('div');
+        listHost.className = 'p-4 sm:p-5';
+        const ul = document.createElement('ul');
+        ul.className = 'space-y-3 sm:space-y-3.5';
 
         day.blocks.forEach(function (block) {
-          const sub = document.createElement('div');
-          sub.innerHTML =
-            '<h4 class="mb-2 text-xs font-bold uppercase tracking-[0.12em] text-[#C21642] sm:text-sm">' +
+          const roomTitle = document.createElement('li');
+          roomTitle.className = 'list-none';
+          roomTitle.innerHTML =
+            '<p class="mb-2 mt-4 first:mt-0 text-xs font-bold uppercase tracking-[0.12em] text-[#C21642] sm:text-sm">' +
             esc(block.room) +
-            '</h4>' +
-            '<div class="-mx-1 overflow-x-auto rounded-lg border border-neutral-200 shadow-sm sm:mx-0">' +
-            '<table class="min-w-[640px] w-full border-collapse text-left text-sm">' +
-            '<thead class="border-b border-neutral-200 bg-neutral-100 text-neutral-800">' +
-            '<tr>' +
-            '<th class="whitespace-nowrap px-3 py-3 font-semibold sm:px-4">時間</th>' +
-            '<th class="px-3 py-3 font-semibold sm:px-4">プログラム</th>' +
-            '<th class="whitespace-nowrap px-3 py-3 font-semibold sm:px-4">難易度</th>' +
-            '<th class="whitespace-nowrap px-3 py-3 font-semibold sm:px-4">インストラクター</th>' +
-            '</tr></thead>' +
-            '<tbody class="divide-y divide-neutral-100 bg-white text-neutral-800"></tbody></table></div>';
-          const tbody = sub.querySelector('tbody');
+            '</p>';
+          const innerUl = document.createElement('ul');
+          innerUl.className = 'space-y-2.5 border-l-2 border-neutral-200 pl-3 sm:pl-4';
 
           block.lessons.forEach(function (les) {
-            const tr = document.createElement('tr');
-            tr.className = 'transition-colors hover:bg-neutral-50/80';
-            tr.innerHTML =
-              '<td class="whitespace-nowrap px-3 py-2.5 align-top font-medium text-neutral-900 sm:px-4 sm:py-3">' +
-              esc(les.time) +
-              '</td>' +
-              '<td class="px-3 py-2.5 align-top text-neutral-800 sm:px-4 sm:py-3">' +
-              esc(les.title) +
-              (les.caption
-                ? '<p class="mt-1.5 text-xs leading-relaxed text-neutral-500 sm:text-sm">' + esc(les.caption) + '</p>'
-                : '') +
-              '</td>' +
-              '<td class="whitespace-nowrap px-3 py-2.5 align-top text-neutral-600 sm:px-4 sm:py-3">' +
-              esc(les.difficulty) +
-              '</td>' +
-              '<td class="whitespace-nowrap px-3 py-2.5 align-top text-neutral-600 sm:px-4 sm:py-3">' +
-              esc(les.instructor) +
-              '</td>';
-            tbody.appendChild(tr);
-
+            lessonIndex += 1;
+            const id = 'lesson-radio-' + lessonIndex;
             const start = parseTimeStart(les.time);
-            const optLabel =
-              day.label + ' ' + block.room + ' ' + les.time + ' ' + les.title + '（' + les.difficulty + '／' + les.instructor + '）';
-            const opt = document.createElement('option');
-            opt.value =
+            const value =
               day.label +
               '｜' +
               block.room +
@@ -411,30 +465,72 @@
               les.title +
               '｜' +
               les.instructor;
-            opt.textContent = optLabel;
-            opt.setAttribute('data-date', day.dateIso);
-            opt.setAttribute('data-time', start);
-            selectEl.appendChild(opt);
+
+            const li = document.createElement('li');
+            li.className = 'list-none';
+            li.innerHTML =
+              '<div class="flex items-stretch gap-0">' +
+              '<input type="radio" name="event_slot" id="' +
+              esc(id) +
+              '" value="' +
+              esc(value) +
+              '" data-date="' +
+              esc(day.dateIso) +
+              '" data-time="' +
+              esc(start) +
+              '" data-day-label="' +
+              esc(day.label) +
+              '" data-room="' +
+              esc(block.room) +
+              '" data-title="' +
+              esc(les.title) +
+              '" data-time-range="' +
+              esc(les.time) +
+              '" class="lesson-radio sr-only">' +
+              '<label for="' +
+              esc(id) +
+              '" class="lesson-card-inner flex w-full cursor-pointer rounded-lg border border-neutral-200 bg-neutral-50/60 px-3 py-3 transition hover:border-neutral-300 hover:bg-white sm:px-4 sm:py-3.5">' +
+              '<span class="flex min-w-0 flex-1 items-start gap-3">' +
+              '<span class="fake-radio" aria-hidden="true"></span>' +
+              '<span class="min-w-0 flex-1 text-sm leading-snug text-neutral-800 sm:text-[0.9375rem]">' +
+              '<span class="font-semibold text-neutral-900">' +
+              esc(les.time) +
+              '</span>' +
+              '<span class="text-neutral-400"> · </span>' +
+              esc(les.title) +
+              '<span class="mt-1 block text-xs text-neutral-500">難易度 ' +
+              esc(les.difficulty) +
+              ' ／ ' +
+              esc(les.instructor) +
+              '</span>' +
+              (les.caption
+                ? '<span class="mt-1.5 block text-xs leading-relaxed text-neutral-500">' + esc(les.caption) + '</span>'
+                : '') +
+              '</span></span></label></div>';
+            innerUl.appendChild(li);
           });
 
-          inner.appendChild(sub);
+          roomTitle.appendChild(innerUl);
+          ul.appendChild(roomTitle);
         });
 
+        listHost.appendChild(ul);
+        wrap.appendChild(listHost);
         scheduleRoot.appendChild(wrap);
       });
 
-      function syncHiddenFromSelect() {
-        const opt = selectEl.options[selectEl.selectedIndex];
-        if (!opt || !opt.getAttribute('data-date')) {
-          visitDateEl.value = '';
-          visitTimeEl.value = '';
-          return;
-        }
-        visitDateEl.value = opt.getAttribute('data-date');
-        visitTimeEl.value = opt.getAttribute('data-time') || '';
-      }
+      scheduleRoot.querySelectorAll('input[name="event_slot"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+          syncFromLessonRadio(radio);
+        });
+      });
 
-      selectEl.addEventListener('change', syncHiddenFromSelect);
+      var formEl = document.getElementById('kyodo-event-form');
+      formEl.addEventListener('reset', function () {
+        visitDateEl.value = '';
+        visitTimeEl.value = '';
+        arrivalHint.classList.add('hidden');
+      });
 
       const nb = document.getElementById('notice-box');
       nb.innerHTML =
@@ -482,14 +578,15 @@
         return;
       }
 
-      const slotSelect = document.getElementById('event_slot');
-      const optSel = slotSelect ? slotSelect.options[slotSelect.selectedIndex] : null;
-      const vdEl = document.getElementById('visit_date');
-      const vtEl = document.getElementById('visit_time');
-      if (optSel && optSel.getAttribute('data-date')) {
-        vdEl.value = optSel.getAttribute('data-date');
-        vtEl.value = optSel.getAttribute('data-time') || '';
+      var chosen = form.querySelector('input[name="event_slot"]:checked');
+      if (!chosen) {
+        showToast('参加希望のレッスンを1つお選びください。', false);
+        document.getElementById('schedule').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
       }
+
+      document.getElementById('visit_date').value = chosen.getAttribute('data-date') || '';
+      document.getElementById('visit_time').value = chosen.getAttribute('data-time') || '';
 
       const fd = new FormData(form);
       const vd = document.getElementById('visit_date').value;
@@ -523,6 +620,10 @@
           }
           if (data.result === 'success') {
             form.reset();
+            document.getElementById('visit_date').value = '';
+            document.getElementById('visit_time').value = '';
+            var ah = document.getElementById('arrival-hint');
+            if (ah) ah.classList.add('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
             showToast('送信が完了しました。', true);
           } else {
