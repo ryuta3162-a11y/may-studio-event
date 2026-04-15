@@ -259,27 +259,29 @@ function setupReminderTrigger() {
 
 function sendApplicantCompletedMail_(p, requestId) {
   var to = p.email.trim();
-  var subject = '【申込完了】JOYFIT24経堂 ホットスタジオ無料体験会';
-  var selected = p.event_slot && p.event_slot.trim() ? p.event_slot : '（自由記入）' + p.lesson_memo;
+  var subject = 'JOYFIT24経堂　5月無料体験会申請が完了しました。';
+  var selected = formatLessonForApplicant_(p.event_slot, p.lesson_memo);
+  var visit = p.visit_datetime || p.visit_date || '未指定';
+
   var body =
-    p.name + ' 様\n\n' +
+    p.name + ' 様\n' +
     'この度は、JOYFIT24経堂 ホットスタジオレッスン無料体験会へお申し込みいただきありがとうございます。\n' +
     '以下内容で受け付けました。\n\n' +
-    '■申込ID\n' + requestId + '\n\n' +
     '■お申し込み内容\n' +
-    'お名前: ' + p.name + '\n' +
-    'メール: ' + p.email + '\n' +
-    '電話番号: ' + p.phone + '\n' +
-    '参加希望: ' + selected + '\n' +
-    '希望日時: ' + (p.visit_datetime || p.visit_date || '未指定') + '\n' +
-    (p.remarks ? '備考: ' + p.remarks + '\n' : '') + '\n' +
-    '■当日の流れ（要確認）\n' +
+    selected + '\n' +
+    '希望日時: ' + visit + '\n' +
+    '※レッスン30分前にご来館下さい。\n\n' +
+    '■当日の流れ\n' +
     '1) インターホンを鳴らしてお呼び出しください。スタッフが開錠します。\n' +
-    '2) 2階でタオルやマットをお渡しし、3階ロッカールームでご準備いただきます。\n' +
-    '3) レッスン開始10分前からスタジオに入館できます。\n\n' +
+    '2) 2階で体験チケットとタオル・マットをお渡しし、3階ロッカールームでご準備いただきます。\n' +
+    '3) レッスン開始10分前からスタジオに入館できます。体験チケットをインストラクターへお渡しください。\n\n' +
+    '※レッスンにより満員となる場合がございます。あらかじめご了承ください。\n' +
+    '※タオルレンタルには限りがあるため、可能であればご持参ください。\n\n' +
     '※本メールは自動送信です。\n' +
-    '※内容変更・キャンセルは本メールへご返信ください。';
-  sendMail_(to, subject, body);
+    '※内容変更・キャンセル等こちらのメールへご返信ください';
+
+  var htmlBody = buildApplicantCompletedHtml_(p, selected, visit, requestId);
+  sendMail_(to, subject, body, htmlBody);
 }
 
 function sendApplicantReminderMail_(p, requestId) {
@@ -295,11 +297,13 @@ function sendApplicantReminderMail_(p, requestId) {
     '希望日時: ' + (p.visit_datetime || p.visit_date || '未指定') + '\n\n' +
     '■当日の流れ\n' +
     '1) インターホンを鳴らしてお呼び出しください。スタッフが開錠します。\n' +
-    '2) 2階でタオルやマットをお渡しし、3階ロッカールームでご準備いただきます。\n' +
-    '3) レッスン開始10分前からスタジオに入館できます。\n\n' +
+    '2) 2階で体験チケットとタオル・マットをお渡しし、3階ロッカールームでご準備いただきます。\n' +
+    '3) レッスン開始10分前からスタジオに入館できます。体験チケットをインストラクターへお渡しください。\n\n' +
+    '※レッスンにより満員となる場合がございます。あらかじめご了承ください。\n' +
     '■持ち物\n' +
     '動きやすいウェア、飲み物\n' +
-    '※フェイスタオル・バスタオル・ヨガマットは無料貸出（数に限りあり）\n\n' +
+    '※フェイスタオル・バスタオル・ヨガマットは無料貸出（数に限りあり）\n' +
+    '※タオルレンタルには限りがあるため、可能であればご持参ください。\n\n' +
     'ご来館をお待ちしております。';
   sendMail_(to, subject, body);
 }
@@ -326,22 +330,78 @@ function sendAdminNotificationMail_(p, requestId, rowNumber) {
   sendMail_(to, subject, body);
 }
 
-function sendMail_(to, subject, body) {
-  if (USE_GMAIL_ALIAS_FROM) {
-    GmailApp.sendEmail(to, subject, body, {
-      name: SENDER_NAME,
-      from: GMAIL_ALIAS_FROM,
-      replyTo: REPLY_TO_EMAIL
-    });
-    return;
-  }
-  MailApp.sendEmail({
-    to: to,
-    subject: subject,
-    body: body,
+function sendMail_(to, subject, body, htmlBody) {
+  var options = {
     name: SENDER_NAME,
     replyTo: REPLY_TO_EMAIL
-  });
+  };
+  if (htmlBody) options.htmlBody = htmlBody;
+  if (USE_GMAIL_ALIAS_FROM) {
+    options.from = GMAIL_ALIAS_FROM;
+    GmailApp.sendEmail(to, subject, body, options);
+    return;
+  }
+  options.to = to;
+  options.subject = subject;
+  options.body = body;
+  MailApp.sendEmail(options);
+}
+
+function formatLessonForApplicant_(eventSlot, lessonMemo) {
+  var slot = String(eventSlot || '').trim();
+  if (!slot) return '（自由記入）' + String(lessonMemo || '');
+  var parts = slot.split('｜');
+  if (parts.length >= 5) {
+    return parts[0] + '｜' + parts[2] + '｜' + parts[3] + '｜' + parts[4];
+  }
+  return slot;
+}
+
+function escHtml_(s) {
+  return String(s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function buildApplicantCompletedHtml_(p, selected, visit, requestId) {
+  var name = escHtml_(p.name);
+  var selectedEsc = escHtml_(selected);
+  var visitEsc = escHtml_(visit);
+
+  return (
+    '<div style="margin:0;padding:24px;background:#f4f4f5;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;color:#171717;">' +
+      '<div style="max-width:680px;margin:0 auto;background:#ffffff;border:1px solid #e5e7eb;border-radius:18px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.06);">' +
+        '<div style="background:linear-gradient(135deg,#c21642 0%,#9d1135 100%);padding:20px 24px;color:#fff;">' +
+          '<div style="font-size:14px;opacity:.9;letter-spacing:.04em;">JOYFIT24経堂</div>' +
+          '<h1 style="margin:8px 0 0;font-size:22px;line-height:1.4;">5月無料体験会 申請完了</h1>' +
+        '</div>' +
+        '<div style="padding:22px 24px 26px;">' +
+          '<p style="margin:0 0 10px;font-size:16px;font-weight:700;color:#111827;">' + name + ' 様</p>' +
+          '<p style="margin:0 0 14px;font-size:14px;line-height:1.8;color:#374151;">この度は、JOYFIT24経堂 ホットスタジオレッスン無料体験会へお申し込みいただきありがとうございます。<br>以下内容で受け付けました。</p>' +
+          '<h2 style="margin:16px 0 8px;font-size:15px;color:#111827;">■お申し込み内容</h2>' +
+          '<p style="margin:0 0 6px;font-size:14px;line-height:1.8;color:#111827;">' + selectedEsc + '</p>' +
+          '<p style="margin:0 0 6px;font-size:14px;line-height:1.8;color:#111827;">希望日時: ' + visitEsc + '</p>' +
+          '<p style="margin:0 0 14px;font-size:13px;line-height:1.7;color:#c21642;font-weight:700;">※レッスン30分前にご来館下さい。</p>' +
+          '<h2 style="margin:16px 0 8px;font-size:15px;color:#111827;">■当日の流れ</h2>' +
+          '<ol style="margin:0;padding-left:18px;font-size:14px;line-height:1.9;color:#374151;">' +
+            '<li>インターホンを鳴らしてお呼び出しください。スタッフが開錠します。</li>' +
+            '<li>2階で体験チケットとタオル・マットをお渡しし、3階ロッカールームでご準備いただきます。</li>' +
+            '<li>レッスン開始10分前からスタジオに入館できます。体験チケットをインストラクターへお渡しください。</li>' +
+          '</ol>' +
+          '<div style="margin-top:12px;padding:12px 13px;border-radius:10px;background:#fff8f8;border:1px solid #ffd6dd;font-size:13px;line-height:1.8;color:#7f1d1d;">' +
+            '※レッスンにより満員となる場合がございます。あらかじめご了承ください。<br>' +
+            '※タオルレンタルには限りがあるため、可能であればご持参ください。' +
+          '</div>' +
+          '<div style="margin-top:16px;padding-top:12px;border-top:1px solid #e5e7eb;font-size:12px;line-height:1.8;color:#6b7280;">' +
+            '※本メールは自動送信です。<br>' +
+            '※内容変更・キャンセル等こちらのメールへご返信ください' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  );
 }
 
 function buildRequestId_() {
