@@ -128,6 +128,56 @@
     .schedule-panel.is-active {
       display: block;
     }
+    .hero-premium {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(120% 120% at 90% -10%, rgba(194, 22, 66, 0.2) 0%, rgba(194, 22, 66, 0) 55%),
+        radial-gradient(110% 110% at -10% 100%, rgba(40, 40, 40, 0.12) 0%, rgba(40, 40, 40, 0) 50%),
+        linear-gradient(180deg, #ffffff 0%, #f7f7f8 100%);
+    }
+    .hero-premium::before,
+    .hero-premium::after {
+      content: '';
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(0);
+      opacity: 0.6;
+      pointer-events: none;
+      animation: hero-float 7s ease-in-out infinite alternate;
+    }
+    .hero-premium::before {
+      width: 16rem;
+      height: 16rem;
+      right: -5rem;
+      top: -6rem;
+      background: radial-gradient(circle, rgba(194, 22, 66, 0.25) 0%, rgba(194, 22, 66, 0) 70%);
+    }
+    .hero-premium::after {
+      width: 12rem;
+      height: 12rem;
+      left: -4rem;
+      bottom: -5rem;
+      background: radial-gradient(circle, rgba(30, 30, 30, 0.12) 0%, rgba(30, 30, 30, 0) 72%);
+      animation-duration: 8.5s;
+    }
+    .hero-title-strong {
+      display: inline-block;
+      background: linear-gradient(100deg, #1a1a1a 0%, #1a1a1a 40%, #C21642 75%, #9d1135 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero-card {
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(4px);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.06);
+    }
+    @keyframes hero-float {
+      from { transform: translateY(0) translateX(0); }
+      to { transform: translateY(8px) translateX(-8px); }
+    }
     @media (prefers-reduced-motion: reduce) {
       .jf-anim-fade-up,
       .jf-anim-slide-img,
@@ -231,11 +281,13 @@
   </header>
 
   <main id="main" class="bg-neutral-100">
-    <section class="border-b border-neutral-200 bg-white" aria-labelledby="hero-title">
+    <section class="hero-premium border-b border-neutral-200" aria-labelledby="hero-title">
       <div class="mx-auto max-w-3xl px-4 py-12 text-center sm:px-6 sm:py-16 sm:text-left">
-        <p class="jf-anim-fade-up text-lg font-bold text-[#C21642] sm:text-xl">JOYFIT24経堂</p>
-        <h1 id="hero-title" class="jf-anim-fade-up jf-anim-delay-1 mt-2 text-balance text-2xl font-bold leading-tight tracking-tight text-neutral-900 sm:text-4xl">ホットスタジオレッスン無料体験会</h1>
-        <p id="hero-sub" class="jf-anim-fade-up jf-anim-delay-2 mt-3 text-base font-medium text-neutral-600 sm:text-lg">非会員様でも無料で参加できる3日間</p>
+        <div class="hero-card jf-anim-fade-up rounded-3xl px-5 py-7 sm:px-8 sm:py-9">
+          <p class="text-lg font-bold text-[#C21642] sm:text-xl">JOYFIT24経堂</p>
+          <h1 id="hero-title" class="jf-anim-fade-up jf-anim-delay-1 mt-2 text-balance text-2xl font-bold leading-tight tracking-tight sm:text-4xl"><span class="hero-title-strong">ホットスタジオレッスン無料体験会</span></h1>
+          <p id="hero-sub" class="jf-anim-fade-up jf-anim-delay-2 mt-3 text-base font-medium text-neutral-600 sm:text-lg">非会員様でも無料で参加できる3日間</p>
+        </div>
       </div>
     </section>
 
@@ -346,19 +398,19 @@
       <section class="border-b border-neutral-200 bg-neutral-50 py-12 sm:py-16">
         <div class="mx-auto max-w-3xl px-4 sm:px-6">
           <div class="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8">
-            <h2 class="text-lg font-bold text-neutral-900 sm:text-xl">ご来店の流れ<span class="ml-2 text-sm font-normal text-neutral-500">（当日）</span></h2>
+            <h2 class="text-lg font-bold text-neutral-900 sm:text-xl">当日の流れ</h2>
             <ol class="mt-5 space-y-4 text-sm leading-relaxed text-neutral-700 sm:text-[0.9375rem]">
               <li class="flex gap-3">
                 <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C21642] text-sm font-bold text-white">1</span>
-                <span><strong class="text-neutral-900">インターホン</strong>を鳴らしてお呼び出しください。</span>
+                <span><strong class="text-neutral-900">インターホン</strong>を鳴らしてお呼び出しください。スタッフが開錠します。</span>
               </li>
               <li class="flex gap-3">
                 <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C21642] text-sm font-bold text-white">2</span>
-                <span>レッスン開始の<strong class="text-neutral-900">30分前</strong>までにご来店ください。</span>
+                <span><strong class="text-neutral-900">2階</strong>でタオルや、マットをお渡しして3階ロッカールームでご準備頂きます。</span>
               </li>
               <li class="flex gap-3">
                 <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C21642] text-sm font-bold text-white">3</span>
-                <span><strong class="text-neutral-900">スタッフがご案内</strong>いたします。</span>
+                <span>レッスン開始<strong class="text-neutral-900">10分前</strong>になりますとスタジオへ入館できます。レッスン開始までお待ちください。</span>
               </li>
             </ol>
           </div>
@@ -396,7 +448,7 @@
             <div class="rounded-xl border border-neutral-200 bg-white p-4 sm:p-5">
               <label class="flex cursor-pointer items-start gap-3">
                 <input type="checkbox" name="consent" value="同意する" class="mt-1 h-[1.125rem] w-[1.125rem] shrink-0 rounded border-neutral-300 text-[#C21642] focus:ring-[#C21642]" required>
-                <span class="text-sm leading-relaxed text-neutral-700">注意事項・3階20時まで・事前予約、および当日のインターホン／30分前来店／スタッフ案内に同意します。</span>
+                <span class="text-sm leading-relaxed text-neutral-700">注意事項・事前予約、および当日のご案内内容に同意します。</span>
               </label>
             </div>
 
@@ -534,11 +586,7 @@
         var h3 = document.createElement('p');
         h3.className = 'text-base font-bold text-neutral-900 sm:text-lg';
         h3.textContent = day.label;
-        var footP = document.createElement('p');
-        footP.className = 'mt-1 text-xs text-neutral-500 sm:text-sm';
-        footP.textContent = day.foot;
         head.appendChild(h3);
-        head.appendChild(footP);
         wrap.appendChild(head);
 
         var listHost = document.createElement('div');
