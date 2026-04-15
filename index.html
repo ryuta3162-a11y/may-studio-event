@@ -2,17 +2,17 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>JOYFIT24経堂｜ゴールデンウィーク特別プログラム（2026年5月）</title>
   <meta name="description" content="JOYFIT24経堂のゴールデンウィーク特別レッスンプログラム（2026年5月）。5/4（月）〜5/6（水）のスケジュールとお申込み。">
+  <meta name="theme-color" content="#C21642">
+  <link rel="preload" href="assets/studio-hero.jpg" as="image" fetchpriority="high">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          colors: {
-            jf: { red: '#C21642', reddark: '#9d1135' }
-          }
+          colors: { jf: { red: '#C21642', reddark: '#9d1135' } }
         }
       }
     };
@@ -24,27 +24,33 @@
     :root {
       --jf-red: #C21642;
       --jf-red-dark: #9d1135;
-      --jf-soft: rgba(194, 22, 66, 0.1);
+      --jf-soft: rgba(194, 22, 66, 0.12);
     }
+    html { scroll-behavior: smooth; }
     body { font-family: 'Noto Sans JP', system-ui, sans-serif; }
     .input {
       width: 100%;
       border-radius: 0.5rem;
       border: 1px solid #d4d4d4;
-      padding: 0.75rem 1rem;
-      font-size: 0.95rem;
+      padding: 0.8125rem 1rem;
+      font-size: 1rem;
       background: #fff;
       transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    @media (min-width: 640px) {
+      .input { font-size: 0.9375rem; }
     }
     .input:focus {
       outline: none;
       border-color: var(--jf-red);
       box-shadow: 0 0 0 3px var(--jf-soft);
     }
+    .input:focus-visible { outline: 2px solid var(--jf-red); outline-offset: 2px; }
     .required::after { content: ' *'; color: var(--jf-red); font-weight: 700; }
+    select.input { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23737373'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 1.25rem; padding-right: 2.5rem; appearance: none; }
   </style>
 </head>
-<body class="text-neutral-900 bg-white antialiased">
+<body class="bg-neutral-100 text-neutral-900 antialiased">
   <script>
     const EVENT_CONFIG = {
       storeName: 'JOYFIT24経堂',
@@ -143,118 +149,154 @@
     ];
   </script>
 
-  <header class="border-b border-neutral-200 bg-white">
-    <div class="mx-auto max-w-4xl px-4 py-4 flex flex-wrap items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <div class="flex h-12 w-12 shrink-0 flex-col items-center justify-center bg-[#C21642] text-center leading-none text-white font-bold">
-          <span class="text-[0.55rem] tracking-tight">JOYFIT</span>
-          <span class="text-lg">24</span>
-        </div>
-        <div>
-          <p class="text-xs text-neutral-500 leading-snug">かしこく使える24時間ジム</p>
-          <p class="text-sm font-semibold text-neutral-900" id="header-store">JOYFIT24経堂</p>
+  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:shadow-lg">メインコンテンツへ</a>
+
+  <header class="sticky top-0 z-50 border-b border-neutral-200/80 bg-white/95 shadow-sm backdrop-blur-md supports-[backdrop-filter]:bg-white/90">
+    <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:gap-4 sm:px-6 sm:py-3.5">
+      <div class="flex min-w-0 flex-1 items-center gap-3 sm:gap-4">
+        <a href="#" class="shrink-0 rounded outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#C21642]" aria-label="ページトップ">
+          <img src="assets/joyfit-logo.png" alt="" width="200" height="48" decoding="async" class="h-8 w-auto max-h-9 object-contain object-left sm:h-10 sm:max-h-10">
+        </a>
+        <div class="min-w-0 border-l border-neutral-200 pl-3 sm:pl-4">
+          <p class="truncate text-[0.65rem] leading-tight text-neutral-500 sm:text-xs">かしこく使える24時間ジム</p>
+          <p class="truncate text-sm font-bold text-neutral-900 sm:text-base" id="header-store">JOYFIT24経堂</p>
         </div>
       </div>
-      <div class="flex gap-2">
-        <a href="#schedule" class="rounded-full border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-800 hover:bg-neutral-50">スケジュール</a>
-        <a href="#apply" class="rounded-full bg-[#C21642] px-5 py-2 text-sm font-bold text-white hover:bg-[#9d1135]">お申込み</a>
-      </div>
+      <nav class="flex w-full shrink-0 items-center justify-end gap-2 sm:w-auto" aria-label="ページ内リンク">
+        <a href="#schedule" class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full border border-neutral-300 bg-white px-4 text-sm font-semibold text-neutral-800 transition hover:border-neutral-400 hover:bg-neutral-50 active:scale-[0.98]">スケジュール</a>
+        <a href="#apply" class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-[#C21642] px-5 text-sm font-bold text-white shadow-md shadow-[#C21642]/25 transition hover:bg-[#9d1135] active:scale-[0.98]">お申込み</a>
+      </nav>
     </div>
   </header>
 
-  <section class="border-b border-neutral-200 bg-neutral-50">
-    <div class="mx-auto max-w-4xl px-4 py-10 sm:py-12">
-      <p class="text-sm font-semibold text-[#C21642]">2026年5月 特別プログラム</p>
-      <h1 class="mt-2 text-2xl sm:text-3xl font-bold text-neutral-900 leading-tight" id="hero-title"></h1>
-      <p class="mt-3 text-neutral-600 text-sm sm:text-base leading-relaxed" id="hero-sub"></p>
-      <div class="mt-4 flex flex-wrap gap-2 text-sm">
-        <span class="rounded border border-neutral-200 bg-white px-3 py-1 text-neutral-700" id="hero-period"></span>
-        <span class="rounded border border-neutral-200 bg-white px-3 py-1 text-neutral-700" id="hero-venue"></span>
+  <section class="relative isolate overflow-hidden" aria-labelledby="hero-title">
+    <div class="absolute inset-0">
+      <img
+        src="assets/studio-hero.jpg"
+        alt="スタジオ"
+        width="1600"
+        height="905"
+        class="h-full min-h-[22rem] w-full object-cover object-[center_42%] sm:min-h-[26rem] sm:object-[center_38%] lg:min-h-[28rem]"
+        fetchpriority="high"
+        decoding="async"
+      >
+      <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/65 to-neutral-950/35" aria-hidden="true"></div>
+      <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-neutral-950/90 to-transparent sm:h-40" aria-hidden="true"></div>
+    </div>
+    <div class="relative mx-auto flex min-h-[22rem] max-w-6xl flex-col justify-end px-4 pb-10 pt-28 sm:min-h-[26rem] sm:pb-14 sm:pt-36 lg:min-h-[28rem] lg:pb-16 lg:pt-40">
+      <div class="max-w-2xl">
+        <p class="text-xs font-bold tracking-[0.2em] text-white/90 sm:text-sm">2026 GW</p>
+        <h1 id="hero-title" class="mt-2 text-balance text-2xl font-bold leading-tight tracking-tight text-white drop-shadow-md sm:text-4xl lg:text-[2.5rem] lg:leading-snug"></h1>
+        <p id="hero-sub" class="mt-3 max-w-xl text-pretty text-sm leading-relaxed text-white/90 sm:text-base"></p>
+        <div class="mt-5 flex flex-wrap gap-2">
+          <span id="hero-period" class="inline-flex items-center rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm sm:text-sm"></span>
+          <span id="hero-venue" class="inline-flex items-center rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm sm:text-sm"></span>
+        </div>
+        <ul id="hero-points" class="mt-8 space-y-3 border-l-2 border-[#C21642] pl-4 text-sm leading-relaxed text-white/95 sm:text-[0.9375rem]"></ul>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <a href="#apply" class="inline-flex min-h-[48px] items-center justify-center rounded-full bg-[#C21642] px-8 text-base font-bold text-white shadow-lg transition hover:bg-[#9d1135] active:scale-[0.99]">お申込みはこちら</a>
+          <a href="#schedule" class="inline-flex min-h-[48px] items-center justify-center rounded-full border-2 border-white/80 bg-white/10 px-8 text-base font-bold text-white backdrop-blur-sm transition hover:bg-white/20 active:scale-[0.99]">レッスン一覧</a>
+        </div>
       </div>
-      <ul class="mt-6 space-y-2 text-sm text-neutral-700 border-t border-neutral-200 pt-6" id="hero-points"></ul>
     </div>
   </section>
 
-  <main>
-    <section id="schedule" class="mx-auto max-w-4xl px-4 py-12 sm:py-14">
-      <div class="flex flex-wrap items-end justify-between gap-4 border-b border-neutral-900 pb-3">
-        <h2 class="text-xl sm:text-2xl font-bold text-neutral-900">レッスンスケジュール</h2>
-        <span class="text-sm font-semibold text-[#C21642]">GW</span>
+  <main id="main" class="bg-neutral-100">
+    <section id="schedule" class="scroll-mt-[4.5rem] border-b border-neutral-200 bg-white py-12 sm:scroll-mt-20 sm:py-16 lg:py-20">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6">
+        <div class="flex flex-wrap items-end justify-between gap-4 border-b border-neutral-900 pb-4">
+          <div>
+            <p class="text-xs font-bold tracking-wider text-[#C21642] sm:text-sm">SCHEDULE</p>
+            <h2 class="mt-1 text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl">レッスンスケジュール</h2>
+          </div>
+          <span class="rounded-full bg-neutral-100 px-3 py-1 text-xs font-bold text-neutral-600 ring-1 ring-neutral-200 sm:text-sm">5/4〜5/6</span>
+        </div>
+        <p class="mt-4 max-w-3xl text-pretty text-sm leading-relaxed text-neutral-600 sm:text-base">星（★）は難易度です。プログラム名の先頭に★があるものは特別レッスンです。表は横にスクロールできます。</p>
+        <div id="schedule-days" class="mt-10 space-y-10 lg:space-y-12"></div>
+        <div id="notice-box" class="mt-10 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm"></div>
       </div>
-      <p class="mt-3 text-sm text-neutral-600">星（★）は難易度です。先頭に★のついたプログラム名は特別レッスン表記です。</p>
-      <div id="schedule-days" class="mt-8 space-y-10"></div>
-      <div class="mt-8 flex overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm" id="notice-box"></div>
     </section>
 
-    <section class="border-y border-neutral-200 bg-neutral-50">
-      <div class="mx-auto max-w-4xl px-4 py-10 grid gap-6 sm:grid-cols-2">
-        <div class="rounded-lg border border-neutral-200 bg-white p-5">
-          <h2 class="text-base font-bold text-neutral-900 border-l-4 border-[#C21642] pl-3">ご来店の流れ（当日）</h2>
-          <ol class="mt-4 space-y-3 text-sm text-neutral-700 list-decimal pl-5 marker:font-semibold marker:text-[#C21642]">
-            <li><span class="font-semibold text-neutral-900">インターホン</span>を鳴らしてお呼び出しください。</li>
-            <li>レッスン開始の<span class="font-semibold text-neutral-900">30分前</span>までにご来店ください。</li>
-            <li><span class="font-semibold text-neutral-900">スタッフがご案内</span>いたします。</li>
+    <section class="border-b border-neutral-200 bg-neutral-50 py-12 sm:py-16">
+      <div class="mx-auto grid max-w-6xl gap-6 px-4 sm:grid-cols-2 sm:gap-8 sm:px-6">
+        <div class="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-7">
+          <h2 class="text-lg font-bold text-neutral-900 sm:text-xl">ご来店の流れ<span class="ml-2 text-sm font-normal text-neutral-500">（当日）</span></h2>
+          <ol class="mt-5 space-y-4 text-sm leading-relaxed text-neutral-700 sm:text-[0.9375rem]">
+            <li class="flex gap-3">
+              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C21642] text-sm font-bold text-white">1</span>
+              <span><strong class="text-neutral-900">インターホン</strong>を鳴らしてお呼び出しください。</span>
+            </li>
+            <li class="flex gap-3">
+              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C21642] text-sm font-bold text-white">2</span>
+              <span>レッスン開始の<strong class="text-neutral-900">30分前</strong>までにご来店ください。</span>
+            </li>
+            <li class="flex gap-3">
+              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C21642] text-sm font-bold text-white">3</span>
+              <span><strong class="text-neutral-900">スタッフがご案内</strong>いたします。</span>
+            </li>
           </ol>
         </div>
-        <div class="rounded-lg border border-neutral-200 bg-white p-5">
-          <h2 class="text-base font-bold text-neutral-900 border-l-4 border-[#C21642] pl-3">店舗</h2>
-          <p class="mt-4 text-sm text-neutral-600 leading-relaxed" id="access-text"></p>
+        <div class="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-7">
+          <h2 class="text-lg font-bold text-neutral-900 sm:text-xl">店舗</h2>
+          <p class="mt-5 text-sm leading-relaxed text-neutral-600 sm:text-[0.9375rem]" id="access-text"></p>
         </div>
       </div>
     </section>
 
-    <section id="apply" class="mx-auto max-w-lg px-4 py-12 sm:py-16">
-      <h2 class="text-center text-xl font-bold text-neutral-900">お申込み</h2>
-      <p class="mt-2 text-center text-sm text-neutral-600">お名前・電話番号でお申込みいただけます。</p>
+    <section id="apply" class="scroll-mt-[4.5rem] bg-white py-12 sm:scroll-mt-20 sm:py-16 lg:py-20">
+      <div class="mx-auto max-w-lg px-4 sm:max-w-xl sm:px-6">
+        <h2 class="text-center text-2xl font-bold text-neutral-900 sm:text-3xl">お申込み</h2>
+        <p class="mx-auto mt-2 max-w-md text-center text-sm text-neutral-600 sm:text-base">お名前・電話番号でお申込みいただけます。</p>
 
-      <form id="kyodo-event-form" class="mt-8 space-y-6 rounded-lg border border-neutral-200 bg-white p-6 shadow-sm">
-        <input type="hidden" name="formType" value="kyodo_may_studio_event">
-        <input type="hidden" name="store_name" id="field-store-name">
+        <form id="kyodo-event-form" class="mt-10 space-y-6 rounded-2xl border border-neutral-200 bg-neutral-50/50 p-6 shadow-lg sm:p-8">
+          <input type="hidden" name="formType" value="kyodo_may_studio_event">
+          <input type="hidden" name="store_name" id="field-store-name">
 
-        <div>
-          <label class="block text-sm font-semibold text-neutral-800 required" for="name">氏名</label>
-          <input class="input mt-1.5" type="text" id="name" name="name" autocomplete="name" required>
-        </div>
-        <div>
-          <label class="block text-sm font-semibold text-neutral-800 required" for="phone">電話番号</label>
-          <input class="input mt-1.5" type="tel" id="phone" name="phone" inputmode="tel" autocomplete="tel" required>
-        </div>
-        <div>
-          <label class="block text-sm font-semibold text-neutral-800 required" for="event_slot">参加希望レッスン</label>
-          <select class="input mt-1.5" id="event_slot" name="event_slot" required>
-            <option value="" disabled selected>選択してください</option>
-          </select>
-        </div>
-        <input type="hidden" name="visit_date" id="visit_date" value="">
-        <input type="hidden" name="visit_time" id="visit_time" value="">
-        <div>
-          <label class="block text-sm font-semibold text-neutral-800" for="remarks">備考</label>
-          <textarea class="input mt-1.5" id="remarks" name="remarks" rows="3" placeholder="任意"></textarea>
-        </div>
+          <div>
+            <label class="block text-sm font-semibold text-neutral-800 required" for="name">氏名</label>
+            <input class="input mt-2" type="text" id="name" name="name" autocomplete="name" required>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-neutral-800 required" for="phone">電話番号</label>
+            <input class="input mt-2" type="tel" id="phone" name="phone" inputmode="tel" autocomplete="tel" required>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-neutral-800 required" for="event_slot">参加希望レッスン</label>
+            <select class="input mt-2" id="event_slot" name="event_slot" required>
+              <option value="" disabled selected>選択してください</option>
+            </select>
+          </div>
+          <input type="hidden" name="visit_date" id="visit_date" value="">
+          <input type="hidden" name="visit_time" id="visit_time" value="">
+          <div>
+            <label class="block text-sm font-semibold text-neutral-800" for="remarks">備考</label>
+            <textarea class="input mt-2" id="remarks" name="remarks" rows="3" placeholder="任意"></textarea>
+          </div>
 
-        <div class="rounded-md border border-neutral-200 bg-neutral-50 p-4">
-          <label class="flex items-start gap-3 cursor-pointer">
-            <input type="checkbox" name="consent" value="同意する" class="mt-1 h-4 w-4 shrink-0 rounded border-neutral-300 text-[#C21642] focus:ring-[#C21642]" required>
-            <span class="text-sm text-neutral-700 leading-relaxed">注意事項・3階20時まで・事前予約、および当日のインターホン／30分前来店／スタッフ案内に同意します。</span>
-          </label>
-        </div>
+          <div class="rounded-xl border border-neutral-200 bg-white p-4 sm:p-5">
+            <label class="flex cursor-pointer items-start gap-3">
+              <input type="checkbox" name="consent" value="同意する" class="mt-1 h-[1.125rem] w-[1.125rem] shrink-0 rounded border-neutral-300 text-[#C21642] focus:ring-[#C21642]" required>
+              <span class="text-sm leading-relaxed text-neutral-700">注意事項・3階20時まで・事前予約、および当日のインターホン／30分前来店／スタッフ案内に同意します。</span>
+            </label>
+          </div>
 
-        <div class="text-center pt-2">
-          <button type="submit" class="w-full rounded-full bg-[#C21642] py-3.5 text-base font-bold text-white hover:bg-[#9d1135] sm:w-auto sm:px-14">送信する</button>
-        </div>
-      </form>
+          <div class="pt-1 text-center">
+            <button type="submit" class="inline-flex min-h-[52px] w-full items-center justify-center rounded-full bg-[#C21642] px-10 text-base font-bold text-white shadow-md transition hover:bg-[#9d1135] active:scale-[0.99] sm:w-auto sm:min-w-[200px]">送信する</button>
+          </div>
+        </form>
+      </div>
     </section>
   </main>
 
-  <footer class="bg-[#C21642] text-white">
-    <div class="mx-auto max-w-2xl px-4 py-12 text-center">
-      <img src="assets/joyfit24-logo.svg" alt="JOYFIT24" width="320" height="62" class="mx-auto h-14 w-auto max-w-full object-contain drop-shadow-sm">
-      <p class="mt-8 text-sm text-white/90" id="footer-copy"></p>
-      <p class="mt-3 text-xs text-white/65">本ページは店舗イベントの案内用です。</p>
+  <footer class="bg-[#C21642] pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-12 text-white">
+    <div class="mx-auto max-w-2xl px-4 text-center sm:px-6">
+      <img src="assets/joyfit-logo.png" alt="JOYFIT24" width="280" height="64" decoding="async" loading="lazy" class="mx-auto h-12 w-auto max-w-[min(100%,280px)] object-contain sm:h-14">
+      <p class="mt-10 text-sm leading-relaxed text-white/95" id="footer-copy"></p>
+      <p class="mt-4 text-xs text-white/70">店舗イベント案内ページ</p>
     </div>
   </footer>
 
-  <div id="toast" class="hidden fixed top-5 right-5 z-50 max-w-sm rounded-lg px-5 py-3 text-white shadow-lg transition-transform duration-300 translate-x-[120%]"></div>
+  <div id="toast" class="hidden fixed right-4 top-4 z-[60] max-w-[calc(100vw-2rem)] translate-x-[120%] rounded-xl px-5 py-3 text-sm font-medium text-white shadow-xl transition-transform duration-300" role="status" aria-live="polite"></div>
 
   <script>
     (function () {
@@ -269,8 +311,12 @@
       const points = document.getElementById('hero-points');
       c.noteBullets.forEach(function (t) {
         const li = document.createElement('li');
-        li.className = 'flex gap-2 pl-0.5';
-        li.innerHTML = '<span class="text-[#C21642] shrink-0 font-bold">・</span><span>' + t + '</span>';
+        li.className = 'flex gap-2.5';
+        li.innerHTML =
+          '<span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#C21642] shadow-sm" aria-hidden="true"></span>' +
+          '<span class="min-w-0">' +
+          t +
+          '</span>';
         points.appendChild(li);
       });
 
@@ -296,36 +342,59 @@
 
       (window.GW_SCHEDULE || []).forEach(function (day) {
         const wrap = document.createElement('div');
-        wrap.className = 'overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm';
+        wrap.className =
+          'overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-md ring-1 ring-black/[0.03]';
         wrap.innerHTML =
-          '<div class="flex flex-col gap-1 bg-[#C21642] px-4 py-3 text-white sm:flex-row sm:items-center sm:justify-between sm:px-5">' +
-          '<h3 class="text-base font-bold">' + esc(day.label) + '</h3>' +
-          '<p class="text-xs text-white/90">' + esc(day.foot) + '</p>' +
+          '<div class="flex flex-col gap-1 bg-[#C21642] px-4 py-3.5 text-white sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-4">' +
+          '<h3 class="text-base font-bold sm:text-lg">' +
+          esc(day.label) +
+          '</h3>' +
+          '<p class="text-xs text-white/90 sm:text-sm">' +
+          esc(day.foot) +
+          '</p>' +
           '</div>' +
-          '<div class="space-y-6 p-4 sm:p-5" data-day="' + esc(day.dateIso) + '"></div>';
+          '<div class="space-y-8 p-4 sm:space-y-10 sm:p-6" data-day="' +
+          esc(day.dateIso) +
+          '"></div>';
         const inner = wrap.querySelector('[data-day]');
 
         day.blocks.forEach(function (block) {
           const sub = document.createElement('div');
           sub.innerHTML =
-            '<h4 class="mb-2 text-xs font-bold uppercase tracking-wider text-[#C21642]">' + esc(block.room) + '</h4>' +
-            '<div class="overflow-hidden rounded-md border border-neutral-200">' +
-            '<table class="min-w-full text-sm">' +
-            '<thead class="bg-neutral-100 text-left text-neutral-700">' +
-            '<tr><th class="px-3 py-2 font-semibold w-32">時間</th><th class="px-3 py-2 font-semibold">プログラム</th>' +
-            '<th class="px-3 py-2 font-semibold w-20">難易度</th><th class="px-3 py-2 font-semibold w-28">インストラクター</th></tr></thead>' +
-            '<tbody class="divide-y divide-neutral-100 bg-white"></tbody></table></div>';
+            '<h4 class="mb-2 text-xs font-bold uppercase tracking-[0.12em] text-[#C21642] sm:text-sm">' +
+            esc(block.room) +
+            '</h4>' +
+            '<div class="-mx-1 overflow-x-auto rounded-lg border border-neutral-200 shadow-sm sm:mx-0">' +
+            '<table class="min-w-[640px] w-full border-collapse text-left text-sm">' +
+            '<thead class="border-b border-neutral-200 bg-neutral-100 text-neutral-800">' +
+            '<tr>' +
+            '<th class="whitespace-nowrap px-3 py-3 font-semibold sm:px-4">時間</th>' +
+            '<th class="px-3 py-3 font-semibold sm:px-4">プログラム</th>' +
+            '<th class="whitespace-nowrap px-3 py-3 font-semibold sm:px-4">難易度</th>' +
+            '<th class="whitespace-nowrap px-3 py-3 font-semibold sm:px-4">インストラクター</th>' +
+            '</tr></thead>' +
+            '<tbody class="divide-y divide-neutral-100 bg-white text-neutral-800"></tbody></table></div>';
           const tbody = sub.querySelector('tbody');
 
           block.lessons.forEach(function (les) {
             const tr = document.createElement('tr');
+            tr.className = 'transition-colors hover:bg-neutral-50/80';
             tr.innerHTML =
-              '<td class="px-3 py-2 font-medium text-neutral-900 whitespace-nowrap">' + esc(les.time) + '</td>' +
-              '<td class="px-3 py-2 text-neutral-800">' + esc(les.title) +
-              (les.caption ? '<p class="mt-1 text-xs text-neutral-500 leading-relaxed">' + esc(les.caption) + '</p>' : '') +
+              '<td class="whitespace-nowrap px-3 py-2.5 align-top font-medium text-neutral-900 sm:px-4 sm:py-3">' +
+              esc(les.time) +
               '</td>' +
-              '<td class="px-3 py-2 text-neutral-600">' + esc(les.difficulty) + '</td>' +
-              '<td class="px-3 py-2 text-neutral-600">' + esc(les.instructor) + '</td>';
+              '<td class="px-3 py-2.5 align-top text-neutral-800 sm:px-4 sm:py-3">' +
+              esc(les.title) +
+              (les.caption
+                ? '<p class="mt-1.5 text-xs leading-relaxed text-neutral-500 sm:text-sm">' + esc(les.caption) + '</p>'
+                : '') +
+              '</td>' +
+              '<td class="whitespace-nowrap px-3 py-2.5 align-top text-neutral-600 sm:px-4 sm:py-3">' +
+              esc(les.difficulty) +
+              '</td>' +
+              '<td class="whitespace-nowrap px-3 py-2.5 align-top text-neutral-600 sm:px-4 sm:py-3">' +
+              esc(les.instructor) +
+              '</td>';
             tbody.appendChild(tr);
 
             const start = parseTimeStart(les.time);
@@ -369,16 +438,21 @@
 
       const nb = document.getElementById('notice-box');
       nb.innerHTML =
-        '<div class="flex w-full flex-col sm:flex-row">' +
-        '<div class="flex w-full shrink-0 items-center justify-center bg-[#C21642] px-4 py-4 text-center text-sm font-bold text-white sm:w-36 sm:py-6">ご確認</div>' +
-        '<div class="flex-1 border-t border-neutral-200 p-4 text-sm text-neutral-700 sm:border-t-0 sm:border-l">' +
-        '<ul class="list-disc space-y-1.5 pl-5">' +
+        '<div class="flex flex-col sm:flex-row">' +
+        '<div class="flex shrink-0 items-center justify-center bg-[#C21642] px-5 py-5 text-center sm:w-40 sm:py-8">' +
+        '<span class="text-sm font-bold text-white sm:text-base">ご確認</span></div>' +
+        '<div class="border-t border-neutral-100 p-5 sm:border-l sm:border-t-0 sm:p-6">' +
+        '<ul class="list-disc space-y-2 pl-5 text-sm leading-relaxed text-neutral-700 sm:text-[0.9375rem]">' +
         c.noteBullets.map(function (b) { return '<li>' + esc(b) + '</li>'; }).join('') +
         '</ul></div></div>';
 
       document.getElementById('access-text').innerHTML =
-        '<span class="block font-medium text-neutral-900">' + esc(c.access.line1) + '</span>' +
-        '<span class="mt-2 block">' + esc(c.access.line2) + '</span>';
+        '<span class="block text-base font-semibold text-neutral-900">' +
+        esc(c.access.line1) +
+        '</span>' +
+        '<span class="mt-3 block leading-relaxed">' +
+        esc(c.access.line2) +
+        '</span>';
 
       document.getElementById('footer-copy').textContent = c.storeName + '｜' + c.campaignTitle;
     })();
