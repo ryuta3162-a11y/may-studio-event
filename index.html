@@ -46,11 +46,11 @@
     }
     .input:focus-visible { outline: 2px solid var(--jf-red); outline-offset: 2px; }
     .required::after { content: ' *'; color: var(--jf-red); font-weight: 700; }
-    .lesson-wrap:has(.lesson-radio:focus-visible) {
+    .lesson-radio:focus {
       outline: 2px solid #C21642;
       outline-offset: 2px;
     }
-    .lesson-wrap:has(.lesson-radio:checked) {
+    .lesson-wrap.lesson-wrap--selected {
       border-color: #C21642;
       background-color: rgba(194, 22, 66, 0.07);
       box-shadow: 0 0 0 1px #C21642;
@@ -64,10 +64,14 @@
       border: 2px solid #d4d4d4;
       background: #fff;
     }
-    .lesson-wrap:has(.lesson-radio:checked) .fake-radio {
+    .lesson-wrap.lesson-wrap--selected .fake-radio {
       border-color: #C21642;
       background-color: #C21642;
       box-shadow: inset 0 0 0 3px #fff;
+    }
+    /* IE 等: opacity:0 のラジオがクリック不能になることがある */
+    .lesson-radio {
+      opacity: 0.02;
     }
     .footer-brand-word {
       font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -85,12 +89,12 @@
 </head>
 <body class="bg-neutral-100 text-neutral-900 antialiased">
   <script>
-    const EVENT_CONFIG = {
+    var EVENT_CONFIG = {
       storeName: 'JOYFIT24経堂',
       campaignTitle: 'ホットスタジオレッスン無料体験会',
       subCatch: '非会員様でも無料で参加できる3日間',
       periodLine: '2026年5月4日（月）〜5月6日（水）',
-      venueLine: '3階ホットスタジオ · JOYFIT24経堂',
+      venueLine: '3F Hot Studio',
       noteBullets: [
         '5/4〜5/6は非会員の方もご参加いただけます（家族・友人のお誘い可）。',
         '参加は事前予約が必要です。詳細は館内掲示・参加券等でご確認ください。',
@@ -193,9 +197,6 @@
           <p class="truncate text-sm font-bold text-neutral-900 sm:text-base" id="header-store">JOYFIT24経堂</p>
         </div>
       </div>
-      <nav class="flex w-full shrink-0 items-center justify-end sm:w-auto" aria-label="ページ内リンク">
-        <a href="#apply" class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-[#C21642] px-6 text-sm font-bold text-white shadow-md shadow-[#C21642]/25 transition hover:bg-[#9d1135] active:scale-[0.98]">お申込み</a>
-      </nav>
     </div>
   </header>
 
@@ -210,17 +211,13 @@
           <span id="hero-venue" class="inline-flex items-center rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1.5 text-xs font-semibold text-neutral-700 sm:text-sm"></span>
         </div>
         <ul id="hero-points" class="mx-auto mt-8 max-w-2xl space-y-3 border-l-2 border-[#C21642] pl-4 text-left text-sm leading-relaxed text-neutral-700 sm:mx-0 sm:text-[0.9375rem]"></ul>
-        <div class="mt-10 flex justify-center sm:justify-start">
-          <a href="#apply" class="inline-flex min-h-[48px] w-full max-w-md items-center justify-center rounded-full bg-[#C21642] px-8 text-base font-bold text-white shadow-lg shadow-[#C21642]/25 transition hover:bg-[#9d1135] active:scale-[0.99] sm:w-auto sm:max-w-none">お申込みはこちら</a>
-        </div>
       </div>
     </section>
 
     <section id="venue" class="scroll-mt-[4.5rem] border-b border-neutral-200 bg-neutral-50 py-12 sm:scroll-mt-20 sm:py-16" aria-labelledby="venue-heading">
       <div class="mx-auto max-w-3xl px-4 sm:px-6">
-        <p class="text-xs font-bold tracking-wider text-[#C21642] sm:text-sm">VENUE</p>
-        <h2 id="venue-heading" class="mt-1 text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl">実施場所</h2>
-        <p class="mt-2 text-lg font-bold text-neutral-800 sm:text-xl">3階ホットスタジオ</p>
+        <p class="text-xs font-bold tracking-wider text-[#C21642] sm:text-sm">3F Hot Studio</p>
+        <h2 id="venue-heading" class="mt-2 text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl">3階ホットスタジオ</h2>
 
         <figure class="mt-8 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-md ring-1 ring-black/[0.04]">
           <img
@@ -390,7 +387,7 @@
 
   <script>
     (function () {
-      const c = window.EVENT_CONFIG;
+      var c = window.EVENT_CONFIG;
       document.getElementById('header-store').textContent = c.storeName;
       document.getElementById('hero-period').textContent = c.periodLine;
       document.getElementById('hero-venue').textContent = c.venueLine;
@@ -398,9 +395,9 @@
       var mapLink = document.getElementById('venue-map-link');
       if (mapLink && c.mapUrl) mapLink.href = c.mapUrl;
 
-      const points = document.getElementById('hero-points');
+      var points = document.getElementById('hero-points');
       c.noteBullets.forEach(function (t) {
-        const li = document.createElement('li');
+        var li = document.createElement('li');
         li.className = 'flex gap-2.5';
         li.innerHTML =
           '<span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#C21642] shadow-sm" aria-hidden="true"></span>' +
@@ -410,11 +407,18 @@
         points.appendChild(li);
       });
 
+      function pad2(n) {
+        var x = parseInt(n, 10);
+        if (isNaN(x) || x < 0) x = 0;
+        var s = String(x);
+        return s.length < 2 ? '0' + s : s;
+      }
+
       function parseTimeStart(timeRange) {
         var first = String(timeRange).split(/\u2013|\u2014|-|〜/)[0].trim();
         var segs = first.split(':');
-        var hh = String(parseInt(segs[0], 10)).padStart(2, '0');
-        var mm = String(parseInt(segs[1], 10)).padStart(2, '0');
+        var hh = pad2(segs[0]);
+        var mm = pad2(segs[1]);
         return hh + ':' + mm;
       }
 
@@ -423,10 +427,6 @@
           .replace(/&/g, '&amp;')
           .replace(/</g, '&lt;')
           .replace(/"/g, '&quot;');
-      }
-
-      function pad2(n) {
-        return String(n).padStart(2, '0');
       }
 
       function clockMinusMinutes(clock, minsSub) {
@@ -444,13 +444,32 @@
         return h + '時' + m + '分';
       }
 
-      const scheduleRoot = document.getElementById('schedule-days');
-      const visitDateEl = document.getElementById('visit_date');
-      const visitTimeEl = document.getElementById('visit_time');
-      const arrivalHint = document.getElementById('arrival-hint');
-      const arrivalBody = document.getElementById('arrival-hint-body');
+      var scheduleRoot = document.getElementById('schedule-days');
+      var visitDateEl = document.getElementById('visit_date');
+      var visitTimeEl = document.getElementById('visit_time');
+      var arrivalHint = document.getElementById('arrival-hint');
+      var arrivalBody = document.getElementById('arrival-hint-body');
 
       var lessonIndex = 0;
+
+      function clearLessonSelectionVisual(root) {
+        if (!root) return;
+        var labels = root.querySelectorAll('.lesson-wrap');
+        for (var si = 0; si < labels.length; si++) {
+          labels[si].classList.remove('lesson-wrap--selected');
+        }
+      }
+
+      function applyLessonSelectionVisual(radio) {
+        if (!scheduleRoot) return;
+        clearLessonSelectionVisual(scheduleRoot);
+        if (radio && radio.checked) {
+          var lab = radio.parentNode;
+          if (lab && lab.classList && lab.classList.contains('lesson-wrap')) {
+            lab.classList.add('lesson-wrap--selected');
+          }
+        }
+      }
 
       function syncFromLessonRadio(radio) {
         if (!radio || !radio.checked) {
@@ -488,44 +507,44 @@
         console.error('schedule-days not found');
       } else {
         (window.GW_SCHEDULE || []).forEach(function (day) {
-          const wrap = document.createElement('div');
+          var wrap = document.createElement('div');
           wrap.className = 'overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-md';
 
-          const head = document.createElement('div');
+          var head = document.createElement('div');
           head.className =
             'flex flex-col gap-1 bg-[#C21642] px-4 py-3.5 text-white sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-4';
-          const h3 = document.createElement('h3');
+          var h3 = document.createElement('h3');
           h3.className = 'text-base font-bold sm:text-lg';
           h3.textContent = day.label;
-          const footP = document.createElement('p');
+          var footP = document.createElement('p');
           footP.className = 'text-xs text-white/90 sm:text-sm';
           footP.textContent = day.foot;
           head.appendChild(h3);
           head.appendChild(footP);
           wrap.appendChild(head);
 
-          const listHost = document.createElement('div');
+          var listHost = document.createElement('div');
           listHost.className = 'p-4 sm:p-5';
-          const ul = document.createElement('ul');
+          var ul = document.createElement('ul');
           ul.className = 'space-y-3 sm:space-y-3.5';
 
           day.blocks.forEach(function (block) {
-            const roomLi = document.createElement('li');
+            var roomLi = document.createElement('li');
             roomLi.className = 'list-none';
 
-            const roomP = document.createElement('p');
+            var roomP = document.createElement('p');
             roomP.className =
               'mb-2 mt-4 text-xs font-bold uppercase tracking-[0.12em] text-[#C21642] sm:text-sm first:mt-0';
             roomP.textContent = block.room;
 
-            const innerUl = document.createElement('ul');
+            var innerUl = document.createElement('ul');
             innerUl.className = 'space-y-2.5 border-l-2 border-neutral-200 pl-3 sm:pl-4';
 
             block.lessons.forEach(function (les) {
               lessonIndex += 1;
-              const id = 'lesson-radio-' + lessonIndex;
-              const start = parseTimeStart(les.time);
-              const value =
+              var id = 'lesson-radio-' + lessonIndex;
+              var start = parseTimeStart(les.time);
+              var value =
                 day.label +
                 '｜' +
                 block.room +
@@ -536,20 +555,20 @@
                 '｜' +
                 les.instructor;
 
-              const li = document.createElement('li');
+              var li = document.createElement('li');
               li.className = 'list-none';
 
-              const label = document.createElement('label');
+              var label = document.createElement('label');
               label.className =
-                'lesson-wrap relative block w-full cursor-pointer rounded-lg border border-neutral-200 bg-neutral-50/60 px-3 py-3 transition hover:border-neutral-300 hover:bg-white sm:px-4 sm:py-3.5';
+                'lesson-wrap relative block w-full cursor-pointer rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-3 transition hover:border-neutral-300 hover:bg-white sm:px-4 sm:py-3.5';
 
-              const input = document.createElement('input');
+              var input = document.createElement('input');
               input.type = 'radio';
               input.name = 'event_slot';
               input.id = id;
               input.value = value;
               input.className =
-                'lesson-radio absolute inset-0 z-[1] m-0 h-full min-h-[3rem] w-full cursor-pointer opacity-0';
+                'lesson-radio absolute inset-0 z-[1] m-0 h-full min-h-[3rem] w-full cursor-pointer';
               input.setAttribute('data-date', day.dateIso);
               input.setAttribute('data-time', start);
               input.setAttribute('data-day-label', day.label);
@@ -557,28 +576,28 @@
               input.setAttribute('data-title', les.title);
               input.setAttribute('data-time-range', les.time);
 
-              const outer = document.createElement('span');
+              var outer = document.createElement('span');
               outer.className =
                 'relative z-0 flex min-w-0 flex-1 items-start gap-3 pointer-events-none';
 
-              const dot = document.createElement('span');
+              var dot = document.createElement('span');
               dot.className = 'fake-radio';
               dot.setAttribute('aria-hidden', 'true');
 
-              const textWrap = document.createElement('span');
+              var textWrap = document.createElement('span');
               textWrap.className = 'min-w-0 flex-1 text-sm leading-snug text-neutral-800 sm:text-[0.9375rem]';
 
-              const timeEl = document.createElement('span');
+              var timeEl = document.createElement('span');
               timeEl.className = 'font-semibold text-neutral-900';
               timeEl.textContent = les.time;
 
-              const sep = document.createElement('span');
+              var sep = document.createElement('span');
               sep.className = 'text-neutral-400';
               sep.textContent = ' · ';
 
-              const titleText = document.createTextNode(les.title);
+              var titleText = document.createTextNode(les.title);
 
-              const meta = document.createElement('span');
+              var meta = document.createElement('span');
               meta.className = 'mt-1 block text-xs text-neutral-500';
               meta.textContent = '難易度 ' + les.difficulty + ' ／ ' + les.instructor;
 
@@ -588,7 +607,7 @@
               textWrap.appendChild(meta);
 
               if (les.caption) {
-                const cap = document.createElement('span');
+                var cap = document.createElement('span');
                 cap.className = 'mt-1.5 block text-xs leading-relaxed text-neutral-500';
                 cap.textContent = les.caption;
                 textWrap.appendChild(cap);
@@ -614,10 +633,11 @@
       }
 
       if (scheduleRoot) {
-        scheduleRoot.querySelectorAll('input[name="event_slot"]').forEach(function (radio) {
-          radio.addEventListener('change', function () {
-            syncFromLessonRadio(radio);
-          });
+        scheduleRoot.addEventListener('change', function (e) {
+          var t = e.target || e.srcElement;
+          if (!t || t.name !== 'event_slot') return;
+          applyLessonSelectionVisual(t);
+          syncFromLessonRadio(t);
         });
       }
 
@@ -626,9 +646,10 @@
         visitDateEl.value = '';
         visitTimeEl.value = '';
         arrivalHint.classList.add('hidden');
+        clearLessonSelectionVisual(scheduleRoot);
       });
 
-      const nb = document.getElementById('notice-box');
+      var nb = document.getElementById('notice-box');
       nb.innerHTML =
         '<div class="flex flex-col sm:flex-row">' +
         '<div class="flex shrink-0 items-center justify-center bg-[#C21642] px-5 py-5 text-center sm:w-40 sm:py-8">' +
@@ -641,10 +662,10 @@
       document.getElementById('footer-copy').textContent = c.storeName + '｜' + c.campaignTitle;
     })();
 
-    const webAppUrl = 'PASTE_GAS_WEB_APP_URL_HERE';
+    var webAppUrl = 'PASTE_GAS_WEB_APP_URL_HERE';
 
-    const form = document.getElementById('kyodo-event-form');
-    const toast = document.getElementById('toast');
+    var form = document.getElementById('kyodo-event-form');
+    var toast = document.getElementById('toast');
 
     function showToast(message, ok) {
       toast.textContent = message;
@@ -681,8 +702,8 @@
         return;
       }
 
-      const vdEl = document.getElementById('visit_date');
-      const vtEl = document.getElementById('visit_time');
+      var vdEl = document.getElementById('visit_date');
+      var vtEl = document.getElementById('visit_time');
       if (chosen) {
         vdEl.value = chosen.getAttribute('data-date') || '';
         vtEl.value = chosen.getAttribute('data-time') || '';
@@ -691,9 +712,9 @@
         vtEl.value = '';
       }
 
-      const fd = new FormData(form);
-      const vd = vdEl.value;
-      const vt = vtEl.value;
+      var fd = new FormData(form);
+      var vd = vdEl.value;
+      var vt = vtEl.value;
       if (chosen) {
         fd.set('event_slot', chosen.value);
         fd.set('visit_date', vd);
@@ -706,13 +727,13 @@
         fd.set('visit_datetime', memo);
       }
 
-      const params = new URLSearchParams();
+      var params = new URLSearchParams();
       fd.forEach(function (value, key) {
         params.append(key, value);
       });
 
-      const btn = form.querySelector('button[type="submit"]');
-      const prev = btn.textContent;
+      var btn = form.querySelector('button[type="submit"]');
+      var prev = btn.textContent;
       btn.disabled = true;
       btn.textContent = '送信中...';
 
@@ -744,7 +765,7 @@
         .catch(function (err) {
           showToast(err.message || '送信に失敗しました。', false);
         })
-        .finally(function () {
+        .then(function () {
           btn.disabled = false;
           btn.textContent = prev;
         });
