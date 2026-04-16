@@ -787,13 +787,33 @@
 
       var nb = document.getElementById('notice-box');
       if (nb && c.noticeBullets && c.noticeBullets.length) {
+        var important = [];
+        var normal = [];
+        c.noticeBullets.forEach(function (b) {
+          if (/1レッスン|30分前|満員/.test(b)) {
+            important.push(b);
+          } else {
+            normal.push(b);
+          }
+        });
         nb.innerHTML =
           '<div class="flex flex-col sm:flex-row">' +
           '<div class="flex shrink-0 items-center justify-center bg-[#C21642] px-5 py-5 text-center sm:w-40 sm:py-8">' +
           '<span class="text-sm font-bold text-white sm:text-base">注意事項</span></div>' +
           '<div class="border-t border-neutral-100 p-5 sm:border-l sm:border-t-0 sm:p-6">' +
+          (important.length
+            ? '<div class="mb-4 rounded-lg border border-red-200 bg-red-50 p-3.5 sm:p-4">' +
+              '<p class="text-xs font-bold tracking-wide text-[#C21642] sm:text-sm">重要</p>' +
+              '<ul class="mt-2 space-y-2 text-sm leading-relaxed text-red-900 sm:text-[0.9375rem]">' +
+              important.map(function (b) {
+                return '<li class="flex items-start gap-2">' +
+                  '<span class="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-[#C21642]"></span>' +
+                  '<span class="font-semibold">' + esc(b) + '</span></li>';
+              }).join('') +
+              '</ul></div>'
+            : '') +
           '<ul class="list-disc space-y-2 pl-5 text-sm leading-relaxed text-neutral-700 sm:text-[0.9375rem]">' +
-          c.noticeBullets.map(function (b) { return '<li>' + esc(b) + '</li>'; }).join('') +
+          normal.map(function (b) { return '<li>' + esc(b) + '</li>'; }).join('') +
           '</ul></div></div>';
       }
 
