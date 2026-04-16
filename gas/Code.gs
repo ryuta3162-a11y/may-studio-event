@@ -182,12 +182,30 @@ function validateParams_(p) {
   }
   if (!p.phone) throw new Error('電話番号は必須です。');
   var hasSlot = !!(p.event_slot && String(p.event_slot).trim());
-  var hasMemo = !!(p.lesson_memo && String(p.lesson_memo).trim());
-  if (!hasSlot && !hasMemo) {
-    throw new Error('参加希望のレッスンを選択するか、「希望内容」にご記入ください。');
-  }
+  if (!hasSlot) throw new Error('参加希望のレッスンを1つ選択してください。');
   if (hasSlot && !p.visit_date) throw new Error('参加希望日が取得できませんでした。もう一度お試しください。');
+  if (hasSlot && isLateForSameDayEntry_(p.visit_date, p.visit_time)) {
+    throw new Error('当日申込みはレッスン開始30分前までです。別の時間帯をお選びください。');
+  }
   if (!p.consent) throw new Error('同意が必要です。');
+}
+
+function isLateForSameDayEntry_(visitDate, visitTime) {
+  if (!visitDate || !visitTime) return false;
+  var now = new Date();
+  var todayYmd = formatYmd_(now);
+  if (String(visitDate) !== todayYmd) return false;
+
+  var parts = String(visitTime).split(':');
+  if (parts.length < 2) return false;
+  var lessonH = parseInt(parts[0], 10);
+  var lessonM = parseInt(parts[1], 10);
+  if (isNaN(lessonH) || isNaN(lessonM)) return false;
+  var lessonTotal = lessonH * 60 + lessonM;
+  var nowH = parseInt(Utilities.formatDate(now, TZ, 'H'), 10);
+  var nowM = parseInt(Utilities.formatDate(now, TZ, 'm'), 10);
+  var nowTotal = nowH * 60 + nowM;
+  return nowTotal > (lessonTotal - 30);
 }
 
 /**
@@ -271,6 +289,7 @@ function sendApplicantCompletedMail_(p, requestId) {
     selected + '\n' +
     '希望日時: ' + visit + '\n' +
     '※レッスン30分前にご来館下さい。\n\n' +
+    '※当日申込みはレッスン開始30分前までです。\n\n' +
     '■当日の流れ\n' +
     '1) インターホンを鳴らしてお呼び出しください。スタッフが開錠します。\n' +
     '2) 2階で体験チケットとタオル・マットをお渡しし、3階ロッカールームでご準備いただきます。\n' +
@@ -295,6 +314,7 @@ function sendApplicantReminderMail_(p, requestId) {
     '■ご予約内容\n' +
     '参加希望: ' + selected + '\n' +
     '希望日時: ' + (p.visit_datetime || p.visit_date || '未指定') + '\n\n' +
+    '※当日申込みはレッスン開始30分前までです。\n\n' +
     '■当日の流れ\n' +
     '1) インターホンを鳴らしてお呼び出しください。スタッフが開錠します。\n' +
     '2) 2階で体験チケットとタオル・マットをお渡しし、3階ロッカールームでご準備いただきます。\n' +
@@ -384,6 +404,7 @@ function buildApplicantCompletedHtml_(p, selected, visit, requestId) {
           '<p style="margin:0 0 6px;font-size:14px;line-height:1.8;color:#111827;">' + selectedEsc + '</p>' +
           '<p style="margin:0 0 6px;font-size:14px;line-height:1.8;color:#111827;">希望日時: ' + visitEsc + '</p>' +
           '<p style="margin:0 0 14px;font-size:13px;line-height:1.7;color:#c21642;font-weight:700;">※レッスン30分前にご来館下さい。</p>' +
+          '<p style="margin:0 0 14px;font-size:13px;line-height:1.7;color:#c21642;font-weight:700;">※当日申込みはレッスン開始30分前までです。</p>' +
           '<h2 style="margin:16px 0 8px;font-size:15px;color:#111827;">■当日の流れ</h2>' +
           '<ol style="margin:0;padding-left:18px;font-size:14px;line-height:1.9;color:#374151;">' +
             '<li>インターホンを鳴らしてお呼び出しください。スタッフが開錠します。</li>' +
