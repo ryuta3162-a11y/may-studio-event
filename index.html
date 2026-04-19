@@ -201,11 +201,11 @@
         'おひとり様1レッスン限定です。',
         '当日申込みはレッスン開始30分前までです。30分を過ぎた申込みは受付できません。',
         '3階のご利用時間は20:00までです。',
-        '当日はスタッフより体験チケットをお渡しします。受け取り後、インストラクターへお渡しください。',
+        '体験チケットはお名前をご記入のうえ、できるだけご持参ください。お持ちでない場合は入り口付近でお受け取りください。3階のインストラクターへお渡しください。',
         '満員となる場合がございます。あらかじめご了承ください。',
         '服装は動きやすいウェアでお越しください。',
-        'タオル・お飲み物は可能であればご持参ください。',
-        '※フェイスタオル・バスタオル・ヨガマットは無料貸出可能ですが、数に限りがございます。'
+        'タオル・お飲み物はご持参ください。',
+        '※ヨガマットのみ無料貸出です（数に限りがあります）。'
       ]
     };
 
@@ -219,7 +219,7 @@
             lessons: [
               { time: '9:30–10:30', title: 'ストレッチヨガ', difficulty: '★', instructor: 'YOKO', caption: '' },
               { time: '10:45–11:45', title: 'ベーシックヨガ', difficulty: '★★', instructor: 'YOKO', caption: '' },
-              { time: '13:45–14:45', title: '睡眠のためのポールストレッチ', difficulty: '★', instructor: 'MIE', caption: '' },
+              { time: '13:45–14:45', title: '肩甲骨のためのポールストレッチ', difficulty: '★', instructor: 'MIE', caption: '' },
               { time: '15:15–16:15', title: 'かんたんサーキット', difficulty: '★★★', instructor: 'MIE', caption: '' },
               { time: '17:00–17:45', title: 'リラックスヨガ', difficulty: '★', instructor: '坂東', caption: '' },
               { time: '18:00–19:00', title: 'カラダ調整ヨガ', difficulty: '★★', instructor: '坂東', caption: '' }
@@ -235,12 +235,17 @@
           {
             room: 'ホットスタジオ',
             lessons: [
-              { time: '9:30–10:30', title: 'ハタヨガ ビギナー', difficulty: '★', instructor: 'ナカシマトオル', caption: '' },
-              { time: '10:45–11:45', title: 'パワーヨガ', difficulty: '★★★', instructor: 'ナカシマトオル', caption: '' },
+              { time: '9:30–10:30', title: 'ハタヨガ', difficulty: '★〜★★', instructor: 'ナカシマトオル', caption: '' },
+              { time: '10:45–11:45', title: 'パワーヨガ', difficulty: '★★〜★★★', instructor: 'ナカシマトオル', caption: '' },
               { time: '12:15–13:15', title: 'ホイールで月礼拝', difficulty: '★★', instructor: 'MIE', caption: '' },
               { time: '13:45–14:45', title: 'SHIN美', difficulty: '★★', instructor: 'MIE', caption: '' },
-              { time: '15:15–16:45', title: '★ポール＆全身ストレッチヨガ', difficulty: '★', instructor: 'Shikano', caption: '初めての方もOK。男性やカラダの硬い方も安心してご参加いただけます。' },
-              { time: '18:00–19:15', title: '★ポール＆全身ストレッチヨガ', difficulty: '★', instructor: 'Shikano', caption: '' }
+              {
+                time: '18:00–19:15',
+                title: 'ポール＆全身ストレッチヨガ',
+                difficulty: '★',
+                instructor: 'Shikano',
+                caption: '初めての方もOK。男性やカラダの硬い方も安心してご参加いただけます。'
+              }
             ]
           }
         ],
@@ -253,12 +258,12 @@
           {
             room: 'ホットスタジオ',
             lessons: [
-              { time: '9:30–10:30', title: '★首肩コリ腰痛改善ヨガ', difficulty: '★', instructor: 'Mariko', caption: 'ストレートネック・猫背改善を意識。腰に無理のないストレッチ。' },
-              { time: '10:45–11:45', title: '快眠ヨガリラックス', difficulty: '★', instructor: 'Mariko', caption: '骨盤・横隔膜を呼吸で動かし、セルフマッサージでストレスを解放。' },
+              { time: '9:30–10:30', title: '首肩コリ腰痛改善ヨガ', difficulty: '★', instructor: 'Mariko', caption: 'ストレートネック・猫背改善を意識。腰に無理のないストレッチ。' },
+              { time: '10:45–11:45', title: 'ほぐしヨガリラックス', difficulty: '★', instructor: 'Mariko', caption: '' },
               { time: '13:30–14:30', title: 'リズムステップ', difficulty: '★★', instructor: 'Hachi', caption: '' },
-              { time: '15:00–15:45', title: 'はじめてのHIPHOP', difficulty: '★★', instructor: 'Hachi', caption: '' },
-              { time: '17:00–17:45', title: 'ホイールで月礼拝', difficulty: '★★', instructor: 'ハナ', caption: '' },
-              { time: '18:15–19:15', title: '鍛えるヨガ', difficulty: '★★', instructor: 'ハナ', caption: '' }
+              { time: '15:00–15:45', title: 'BODYBALANCE45', difficulty: '★〜★★', instructor: 'Hachi', caption: '' },
+              { time: '17:00–17:45', title: 'ホイールで月礼拝', difficulty: '★★', instructor: 'Hana', caption: '' },
+              { time: '18:15–19:15', title: '整えるヨガ', difficulty: '★', instructor: 'Hana', caption: '' }
             ]
           }
         ],
@@ -409,11 +414,11 @@
               </li>
               <li class="flex gap-3">
                 <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C21642] text-sm font-bold text-white">2</span>
-                <span><strong class="text-neutral-900">2階</strong>で体験チケットとタオル・マットをお渡しして、3階ロッカールームでご準備頂きます。</span>
+                <span><strong class="text-neutral-900">2階</strong>へ上がり、入り口付近の体験チケットにお名前をご記入ください（できるだけご持参ください）。ヨガマットのみ貸出があります。タオル・お飲み物はご持参ください。</span>
               </li>
               <li class="flex gap-3">
                 <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C21642] text-sm font-bold text-white">3</span>
-                <span>レッスン開始<strong class="text-neutral-900">10分前</strong>になりますとスタジオへ入館できます。体験チケットをインストラクターへお渡しのうえ、レッスン開始までお待ちください。</span>
+                <span><strong class="text-neutral-900">3階</strong>のインストラクターへ体験チケットをお渡しください。レッスン開始までお待ちください。</span>
               </li>
             </ol>
           </div>
@@ -570,7 +575,7 @@
           '</strong>にご来館ください。<br><br>' +
           '当日は入り口<strong class="text-neutral-900">インターホン</strong>を押して下さい。スタッフがご案内いたします。<br>' +
           '<span class="text-[#C21642]">当日申込みはレッスン開始30分前までです。</span><br>' +
-          'スタッフから<strong class="text-neutral-900">体験チケット</strong>を受け取り、インストラクターへお渡しください。';
+          '体験チケットはお名前をご記入のうえ<strong class="text-neutral-900">3階のインストラクターへお渡し</strong>ください（入り口付近でもお受け取りいただけます）。マットのみ貸出、タオルはご持参をおすすめします。';
         arrivalHint.classList.remove('hidden');
       }
 
