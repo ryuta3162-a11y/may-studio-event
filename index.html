@@ -201,7 +201,7 @@
         'おひとり様1レッスン限定です。',
         '当日申込みはレッスン開始30分前までです。30分を過ぎた申込みは受付できません。',
         '3階のご利用時間は20:00までです。',
-        '入り口でインターホンを押すと、スタッフが体験チケットをお渡しします。3階のインストラクターへお渡しください。',
+        '体験チケットは入り口に設置しています。お名前をご記入のうえお持ちください。開錠は入り口のインターホンよりお願いします。3階のレッスンではインストラクターへお渡しください。',
         '満員となる場合がございます。あらかじめご了承ください。',
         '服装は動きやすいウェアでお越しください。',
         'タオル・お飲み物はご持参ください。',
@@ -219,7 +219,7 @@
             lessons: [
               { time: '9:30–10:30', title: 'ストレッチヨガ', difficulty: '★', instructor: 'YOKO', caption: '' },
               { time: '10:45–11:45', title: 'ベーシックヨガ', difficulty: '★★', instructor: 'YOKO', caption: '' },
-              { time: '13:45–14:45', title: '肩甲骨のためのポールストレッチ', difficulty: '★', instructor: 'MIE', caption: '' },
+              { time: '13:45–14:45', title: '開脚', difficulty: '★', instructor: 'MIE', caption: '' },
               { time: '15:15–16:15', title: 'かんたんサーキット', difficulty: '★★★', instructor: 'MIE', caption: '' },
               { time: '17:00–17:45', title: 'リラックスヨガ', difficulty: '★', instructor: '坂東', caption: '' },
               { time: '18:00–19:00', title: 'カラダ調整ヨガ', difficulty: '★★', instructor: '坂東', caption: '' }
@@ -407,16 +407,34 @@
         <div class="mx-auto max-w-3xl px-4 sm:px-6">
           <div class="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8">
             <h2 class="text-lg font-bold text-neutral-900 sm:text-xl">当日の流れ</h2>
-            <ol class="mt-5 space-y-4 text-sm leading-relaxed text-neutral-700 sm:text-[0.9375rem]">
-              <li class="flex gap-3">
-                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C21642] text-sm font-bold text-white">1</span>
-                <span>入り口で<strong class="text-neutral-900">インターホン</strong>を押してください。スタッフが開錠し、<strong class="text-neutral-900">体験チケット</strong>をお渡しします。</span>
-              </li>
-              <li class="flex gap-3">
-                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C21642] text-sm font-bold text-white">2</span>
-                <span>そのチケットを<strong class="text-neutral-900">3階</strong>の<strong class="text-neutral-900">インストラクター</strong>へお渡しのうえ、レッスンにご参加ください。</span>
-              </li>
-            </ol>
+            <div class="mt-5 flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between lg:gap-10">
+              <ol class="min-w-0 flex-1 space-y-4 text-sm leading-relaxed text-neutral-700 sm:text-[0.9375rem]">
+                <li class="flex gap-3">
+                  <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C21642] text-sm font-bold text-white">1</span>
+                  <span>入り口に置いてある<strong class="text-neutral-900">体験チケット</strong>をお取りください。お名前をご記入のうえ、<strong class="text-neutral-900">インターホン</strong>を押してください。スタッフが開錠します。</span>
+                </li>
+                <li class="flex gap-3">
+                  <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C21642] text-sm font-bold text-white">2</span>
+                  <span>チケットをお持ちのうえ、<strong class="text-neutral-900">3階</strong>の<strong class="text-neutral-900">インストラクター</strong>へお渡しください。</span>
+                </li>
+              </ol>
+              <figure class="mx-auto shrink-0 text-center lg:mx-0 lg:pt-1" aria-label="入り口に設置している体験チケットの見本">
+                <div class="inline-block -rotate-1 transition-transform hover:rotate-0">
+                  <div class="rounded-2xl bg-gradient-to-br from-white via-neutral-50 to-neutral-100 p-[5px] shadow-[0_12px_40px_-6px_rgba(194,22,66,0.22)] ring-1 ring-[#C21642]/25">
+                    <img
+                      src="assets/experience-ticket.png"
+                      alt="体験チケット（入り口設置・見本）"
+                      width="200"
+                      height="360"
+                      decoding="async"
+                      loading="lazy"
+                      class="mx-auto block h-auto w-[min(9.5rem,42vw)] max-w-[152px] rounded-[10px] object-cover object-top sm:w-[9.75rem] sm:max-w-none"
+                    >
+                  </div>
+                </div>
+                <figcaption class="mt-2.5 max-w-[11rem] text-[0.7rem] leading-snug text-neutral-500 sm:text-xs">入り口に設置しています（見本）</figcaption>
+              </figure>
+            </div>
           </div>
         </div>
       </section>
@@ -569,7 +587,7 @@
           'ご案内の為、レッスン開始の<strong class="text-[#C21642]">30分前</strong>、<strong class="text-neutral-900 text-lg">' +
           esc(formatJpClock(arriveClock)) +
           '</strong>にご来館ください。<br><br>' +
-          '入り口で<strong class="text-neutral-900">インターホン</strong>を押してください。スタッフが開錠し、<strong class="text-neutral-900">体験チケット</strong>をお渡しします。そのチケットを<strong class="text-neutral-900">3階のインストラクター</strong>へお渡しください。<br>' +
+          '入り口の<strong class="text-neutral-900">体験チケット</strong>をお取りのうえ（お名前をご記入ください）、<strong class="text-neutral-900">インターホン</strong>で開錠後、チケットを<strong class="text-neutral-900">3階のインストラクター</strong>へお渡しください。<br>' +
           '<span class="text-[#C21642]">当日申込みはレッスン開始30分前までです。</span><br>' +
           'タオル・お飲み物はご持参ください。ヨガマットのみ貸出があります（数に限りがあります）。';
         arrivalHint.classList.remove('hidden');
